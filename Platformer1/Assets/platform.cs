@@ -13,9 +13,9 @@ public class platform : MonoBehaviour {
     {
         if (collider.gameObject.CompareTag("Character")) //&& charState == characterState.inAir)
         {
-            Vector3 max = gameObject.GetComponents<BoxCollider2D>()[0].bounds.max;
-            if (//collider.gameObject.GetComponentsInChildren<Transform>()[0].position.y >= max.y)
-                collider.gameObject.transform.FindChild("contactPoint").transform.position.y >= max.y)
+            float checkY = collider.gameObject.GetComponent<CapsuleCollider2D>().bounds.min.y;
+            Vector3 max = gameObject.GetComponents<BoxCollider2D>()[1].bounds.max;
+            if (checkY >= max.y)
             {
                 Physics2D.IgnoreCollision(collider, gameObject.GetComponents<BoxCollider2D>()[1], false);
                 //charState = characterState.idle;
