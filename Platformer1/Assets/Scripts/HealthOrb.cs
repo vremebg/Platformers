@@ -21,7 +21,6 @@ public class HealthOrb : MonoBehaviour {
 
 
     SpriteRenderer orbSpriteRenderer;
-    Rigidbody2D orbRigidBody;
 
     float startOfCooldown;
     float initialTransformY;
@@ -32,7 +31,6 @@ public class HealthOrb : MonoBehaviour {
     {
         startOfCooldown = Time.time;
         orbSpriteRenderer = gameObject.GetComponent<SpriteRenderer>();
-        orbRigidBody = gameObject.GetComponent<Rigidbody2D>();
         initialTransformY = transform.position.y;
         initialTransformX = transform.position.x;
     }
