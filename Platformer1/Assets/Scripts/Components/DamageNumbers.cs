@@ -98,7 +98,7 @@ public class DamageNumbers : MonoBehaviour {
             else
                 sprRenderer.color = new Color(0, 0.6f, 0, 1);
             sprRenderer.sortingLayerName = "Orb_Mines";
-            sprGameObj.transform.position = new Vector2(gameObj.transform.position.x - count * spacingX, gameObj.GetComponent<CapsuleCollider2D>().bounds.max.y + 1f);
+            sprGameObj.transform.position = new Vector2(gameObj.transform.position.x - count * spacingX, gameObj.GetComponent<BoxCollider2D>().bounds.max.y + 1f);
             temp.initialX = sprGameObj.transform.position.x;
             temp.initialY = sprGameObj.transform.position.y;
             temp.sprites.Add(sprGameObj);
