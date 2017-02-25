@@ -6,10 +6,10 @@ using UnityEngine.UI;
 public class Health : MonoBehaviour {
 
     [SerializeField]
-    private int health;
+    private float health;
 
     [SerializeField]
-    private int maxHealth;
+    private float maxHealth;
 
     [SerializeField]
     private GameObject hudComponent;
@@ -23,12 +23,12 @@ public class Health : MonoBehaviour {
             hudComponent.GetComponent<Text>().text = health.ToString();
     }
 
-    public int getHealth()
+    public float getHealth()
     {
         return health;
     }
 
-    public void changeHealth(int change)
+    public void changeHealth(float change)
     {
         health += change;
         if (health > maxHealth)

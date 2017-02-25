@@ -11,10 +11,10 @@ public class HealthOrb : MonoBehaviour {
     int secondsBetweenHealthGive = 5;
 
     [SerializeField]
-    float maxDeviationY = 0.6f;
+    float maxDeviationY = 0.4f;
 
     [SerializeField]
-    float maxDeviationX = 0.3f;
+    float maxDeviationX = 0.1f;
 
     [SerializeField]
     float angleStep = 0.1f;

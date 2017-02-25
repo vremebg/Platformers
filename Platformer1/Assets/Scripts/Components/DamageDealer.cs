@@ -5,7 +5,7 @@ using UnityEngine;
 public class DamageDealer : MonoBehaviour {
 
     [SerializeField]
-    int damage;
+    float damage;
 
     public void applyDamageOnce(GameObject receiver)
     {
@@ -13,6 +13,16 @@ public class DamageDealer : MonoBehaviour {
     }
 
     public void applyDamageOnce(string receiver)
+    {
+        GameObject.Find(receiver).GetComponent<Health>().changeHealth(-damage);
+    }
+
+    public void applyDamageOnce(GameObject receiver, float damage)
+    {
+        receiver.GetComponent<Health>().changeHealth(-damage);
+    }
+
+    public void applyDamageOnce(string receiver, float damage)
     {
         GameObject.Find(receiver).GetComponent<Health>().changeHealth(-damage);
     }
