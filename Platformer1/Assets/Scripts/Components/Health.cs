@@ -17,6 +17,9 @@ public class Health : MonoBehaviour {
     [SerializeField]
     private bool isOnHud = false;
 
+    [SerializeField]
+    private bool showDamageNumbersOnChange = false;
+
     void Start()
     {
         if (isOnHud)
@@ -35,6 +38,9 @@ public class Health : MonoBehaviour {
             health = maxHealth;
         if (isOnHud)
             hudComponent.GetComponent<Text>().text = health.ToString();
+
+        if(showDamageNumbersOnChange)
+            gameObject.GetComponent<DamageNumbers>().addNumberToDisplay((int)change);
     }
 
     public bool healthDepleted()
