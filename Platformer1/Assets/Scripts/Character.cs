@@ -21,7 +21,7 @@ public class Character : MonoBehaviour {
     float walkVelocity = 5;
 
     Rigidbody2D characterRigidBody;
-    BoxCollider2D charBoxCollider;
+    Collider2D charBoxCollider;
     Animator characterAnimator;
 
     characterState charState;
@@ -33,7 +33,7 @@ public class Character : MonoBehaviour {
     void Start () {
         characterRigidBody = gameObject.GetComponent<Rigidbody2D>();
         characterAnimator = gameObject.GetComponent<Animator>();
-        charBoxCollider = gameObject.GetComponent<BoxCollider2D>();
+        charBoxCollider = gameObject.GetComponent<Collider2D>();
     }
 
     void HandleInput()
@@ -104,8 +104,8 @@ public class Character : MonoBehaviour {
         if (characterRigidBody.velocity.y <= 0)
         {
             bool isFalling = true;
-            Collider2D[] check = Physics2D.OverlapAreaAll(new Vector2(charBoxCollider.bounds.min.x, charBoxCollider.bounds.min.y),
-new Vector2(charBoxCollider.bounds.min.x + charBoxCollider.size.x, charBoxCollider.bounds.min.y - 0.001f));
+            Collider2D[] check = Physics2D.OverlapAreaAll(new Vector2(charBoxCollider.bounds.min.x + charBoxCollider.bounds.size.x / 2, charBoxCollider.bounds.min.y),
+new Vector2(charBoxCollider.bounds.min.x + charBoxCollider.bounds.size.x/2, charBoxCollider.bounds.min.y - 0.001f));
             if (check.Length != 0)
                 foreach (Collider2D temp in check)
                 {

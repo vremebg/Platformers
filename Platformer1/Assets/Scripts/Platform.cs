@@ -13,7 +13,7 @@ public class Platform : MonoBehaviour {
     {
         if (collider.gameObject.CompareTag("Character")) //&& charState == characterState.inAir)
         {
-            float checkY = collider.gameObject.GetComponent<BoxCollider2D>().bounds.min.y;
+            float checkY = collider.gameObject.GetComponent<Collider2D>().bounds.min.y;
             Vector3 max = gameObject.GetComponents<BoxCollider2D>()[1].bounds.max;
             if (checkY >= max.y)
             {
