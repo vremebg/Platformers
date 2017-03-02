@@ -45,7 +45,7 @@ public class Health : MonoBehaviour {
 
     public bool healthDepleted()
     {
-        if (health<0) return true;
+        if (health<=0) return true;
         else return false;
     }
 

@@ -10,15 +10,19 @@ public class PoisonPit : MonoBehaviour {
     [SerializeField]
     int framesBetweenDamage = 4;
 
+    [SerializeField]
+    string targetTags;
+
     bool start = false;
     int counter = 0;
 
     GameObject receiver;
+    string[] tags;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
+    // Use this for initialization
+    void Start () {
+        tags = targetTags.Split(',');
+    }
 
     void FixedUpdate()
     {
@@ -33,16 +37,18 @@ public class PoisonPit : MonoBehaviour {
 	
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collider.gameObject.CompareTag("Character"))
-        {
-            start = true;
-            receiver = collider.gameObject;
-        }
+        foreach (string tag in tags)
+            if (collider.gameObject.CompareTag(tag))
+            {
+                start = true;
+                receiver = collider.gameObject;
+            }
     }
 
     private void OnTriggerExit2D(Collider2D collider)
     {
-        if (collider.gameObject.CompareTag("Character"))
+        foreach (string tag in tags)
+            if (collider.gameObject.CompareTag(tag))
             start = false;
     }
 }
