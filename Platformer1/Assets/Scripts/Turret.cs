@@ -22,6 +22,10 @@ public class Turret : MonoBehaviour {
     [SerializeField]
     Transform cannon;
 
+    //when too close
+    [SerializeField]
+    float disableRange = 2;
+
     Animator turretAnimator;
 
     string[] tags;
@@ -53,19 +57,24 @@ public class Turret : MonoBehaviour {
                         {
                             float dx = collidingObject.gameObject.transform.position.x - shootingPoint.position.x;
                             float dy = collidingObject.gameObject.transform.position.y - shootingPoint.position.y;
-                            if (cannon.position.x - collidingObject.gameObject.transform.position.x < 0 && this.transform.localScale.x >= 0)
-                                this.transform.localScale = new Vector2(this.transform.localScale.x * -1, this.transform.localScale.y);
-                            if (cannon.position.x - collidingObject.gameObject.transform.position.x > 0 && this.transform.localScale.x <= 0)
-                                this.transform.localScale = new Vector2(this.transform.localScale.x * -1, this.transform.localScale.y);
-                            cannon.rotation = Quaternion.Euler(0, 0, Mathf.Atan((cannon.position.y - collidingObject.gameObject.transform.position.y) / (cannon.position.x - collidingObject.gameObject.transform.position.x)) * 180 / Mathf.PI);
-                            Instantiate(ammo, shootingPoint.position, Quaternion.Euler(0, 0, Mathf.Atan(dy/dx)*180/Mathf.PI));
-                            GameObject[] ammos = GameObject.FindGameObjectsWithTag("Turret_ammo");
-                            ammos[ammos.Length - 1].GetComponent<TurretAmmo>().setInitialVelocity(dx, dy);
-                            if (dx < 0)
-                                ammos[ammos.Length - 1].transform.localScale = new Vector2(ammos[ammos.Length - 1].transform.localScale.x * -1, ammos[ammos.Length - 1].transform.localScale.y);
-                            counter = 0;
-                            stopCheck = true;
-                            break;
+                            if (Mathf.Sqrt(Mathf.Pow(cannon.transform.position.x - collidingObject.gameObject.transform.position.x, 2) 
+                                + Mathf.Pow(cannon.transform.position.y - collidingObject.gameObject.transform.position.y, 2)) >= disableRange)
+                            {
+                                if (cannon.position.x - collidingObject.gameObject.transform.position.x < 0 && this.transform.localScale.x >= 0)
+                                    this.transform.localScale = new Vector2(this.transform.localScale.x * -1, this.transform.localScale.y);
+                                if (cannon.position.x - collidingObject.gameObject.transform.position.x > 0 && this.transform.localScale.x <= 0)
+                                    this.transform.localScale = new Vector2(this.transform.localScale.x * -1, this.transform.localScale.y);
+                                cannon.rotation = Quaternion.Euler(0, 0, Mathf.Atan((cannon.position.y - collidingObject.gameObject.transform.position.y) / (cannon.position.x - collidingObject.gameObject.transform.position.x)) * 180 / Mathf.PI);
+                                Instantiate(ammo, shootingPoint.position, Quaternion.Euler(0, 0, Mathf.Atan(dy / dx) * 180 / Mathf.PI));
+                                GameObject[] ammos = GameObject.FindGameObjectsWithTag("Turret_ammo");
+                                ammos[ammos.Length - 1].GetComponent<TurretAmmo>().setInitialVelocity(dx, dy);
+                                if (dx < 0)
+                                    ammos[ammos.Length - 1].transform.localScale = new Vector2(ammos[ammos.Length - 1].transform.localScale.x * -1, ammos[ammos.Length - 1].transform.localScale.y);
+                                counter = 0;
+                                stopCheck = true;
+                                break;
+                            }
+
                         }
                     if (stopCheck)
                         break;
