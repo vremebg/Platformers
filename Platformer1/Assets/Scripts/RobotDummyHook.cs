@@ -59,18 +59,17 @@ public class RobotDummyHook : MonoBehaviour {
         else
         {
             bool breakAll = false;
-            float distance = Mathf.Abs(endRaycastPoint.position.x - startRaycastPoint.position.x);
-            RaycastHit2D[] hits = Physics2D.RaycastAll(startRaycastPoint.position, endRaycastPoint.position, Mathf.Abs(endRaycastPoint.position.x - startRaycastPoint.position.x));
-            if (hits != null && hits.Length != 0)
-                foreach (RaycastHit2D hit in hits)
+            Collider2D[] colliders = Physics2D.OverlapAreaAll(startRaycastPoint.position, endRaycastPoint.position);
+            if (colliders != null && colliders.Length != 0)
+                foreach (Collider2D collider in colliders)
                 {
                     if (tags != null & tags.Length != 0)
                         foreach (string tag in tags)
-                            if (hit.collider.CompareTag(tag))
+                            if (collider.CompareTag(tag))
                             {
                                 hitting = true;
                                 facingRight = (thisRigidBody.velocity.x > 0);
-                                gameObject.GetComponent<DamageDealer>().applyDamageOnce(hit.collider.gameObject);
+                                gameObject.GetComponent<DamageDealer>().applyDamageOnce(collider.gameObject);
                                 gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
                                 counter = 0;
                                 breakAll = true;
