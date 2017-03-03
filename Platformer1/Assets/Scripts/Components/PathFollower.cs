@@ -5,7 +5,7 @@ using UnityEngine;
 public class PathFollower : MonoBehaviour {
 
     [SerializeField]
-    float speedAroundThePath = 0.03f;
+    float speedAroundThePathPerSecond = 1.5f;
 
     [SerializeField]
     GameObject platform;
@@ -20,6 +20,7 @@ public class PathFollower : MonoBehaviour {
     float y;
     float predictedX;
     float predictedY;
+    float timedSpeedAroundThePath;
 
     // Use this for initialization
     void Start () {
@@ -50,23 +51,23 @@ public class PathFollower : MonoBehaviour {
         predictedY = y;
         float hypotenuse = Mathf.Sqrt(Mathf.Pow(points[nextPoint].transform.position.x - x, 2) + Mathf.Pow(points[nextPoint].transform.position.y - y, 2));
         if (hypotenuse != 0)
-            predictedX = x + speedAroundThePath * (points[nextPoint].transform.position.x - x) / hypotenuse;
+            predictedX = x + timedSpeedAroundThePath * (points[nextPoint].transform.position.x - x) / hypotenuse;
         if (hypotenuse != 0)
-            predictedY = y + speedAroundThePath * (points[nextPoint].transform.position.y - y) / hypotenuse;
+            predictedY = y + timedSpeedAroundThePath * (points[nextPoint].transform.position.y - y) / hypotenuse;
 
         Vector2 temp = directionVector();
 
         if (temp.x == 0)
             if (temp.y > 0)
-                predictedY = y + speedAroundThePath;
+                predictedY = y + timedSpeedAroundThePath;
             else if (temp.y < 0)
-                predictedY = y - speedAroundThePath;
+                predictedY = y - timedSpeedAroundThePath;
 
         if (temp.y == 0)
             if (temp.x > 0)
-                predictedX = x + speedAroundThePath;
+                predictedX = x + timedSpeedAroundThePath;
             else if (temp.x < 0)
-                predictedX = x - speedAroundThePath;
+                predictedX = x - timedSpeedAroundThePath;
 
         if (hypotenuse == 0 && temp.x != 0 && temp.y != 0)
             calcCurrentAndNextPoint();
@@ -104,7 +105,8 @@ public class PathFollower : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void FixedUpdate () {
+	void Update () {
+        timedSpeedAroundThePath = speedAroundThePathPerSecond * Time.deltaTime;
         if (points.Length >= 2)
             calcPredictedXY();
     }

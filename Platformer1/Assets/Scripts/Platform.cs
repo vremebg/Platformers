@@ -22,7 +22,7 @@ public class Platform : MonoBehaviour {
                         Collider2D[] colliders = obj.GetComponents<Collider2D>();
                         if (colliders != null && colliders.Length != 0)
                             foreach (Collider2D objCollider in colliders)
-                                Physics2D.IgnoreCollision(objCollider, gameObject.GetComponents<BoxCollider2D>()[1], true);
+                                Physics2D.IgnoreCollision(objCollider, gameObject.GetComponents<BoxCollider2D>()[0], true);
                     }
             }
     }
@@ -34,14 +34,14 @@ public class Platform : MonoBehaviour {
                 if (collider.gameObject.CompareTag(tag)) //&& charState == characterState.inAir)
                 {
                     float checkY = collider.gameObject.GetComponent<Collider2D>().bounds.min.y;
-                    Vector3 max = gameObject.GetComponents<BoxCollider2D>()[1].bounds.max;
+                    Vector3 max = gameObject.GetComponents<BoxCollider2D>()[0].bounds.max;
                     if (checkY >= max.y)
                     {
-                        Physics2D.IgnoreCollision(collider, gameObject.GetComponents<BoxCollider2D>()[1], false);
+                        Physics2D.IgnoreCollision(collider, gameObject.GetComponents<BoxCollider2D>()[0], false);
                     }
                     else
                     {
-                        Physics2D.IgnoreCollision(collider, gameObject.GetComponents<BoxCollider2D>()[1], true);
+                        Physics2D.IgnoreCollision(collider, gameObject.GetComponents<BoxCollider2D>()[0], true);
                     }
                 }
     }

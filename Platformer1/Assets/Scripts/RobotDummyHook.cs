@@ -14,7 +14,7 @@ public class RobotDummyHook : MonoBehaviour {
     Transform endRaycastPoint;
 
     [SerializeField]
-    int framesBetweenHits = 50;
+    float secondsBetweenHits = 2;
 
     [SerializeField]
     string targetTags = "Character";
@@ -24,8 +24,7 @@ public class RobotDummyHook : MonoBehaviour {
     string[] tags;
     Animator thisAnimator;
     bool hitting = false;
-    int counter;
-    bool facingRight = true;
+    float timeCounter;
 
     void Start () {
         thisSpriteRenderer = gameObject.GetComponent<SpriteRenderer>();
@@ -46,17 +45,12 @@ public class RobotDummyHook : MonoBehaviour {
                                 Physics2D.IgnoreCollision(objCollider, gameObject.GetComponent<BoxCollider2D>(), true);
                     }
             }
-        counter = framesBetweenHits;
+        timeCounter = Time.time;
     }
 
-    void FixedUpdate()
+    void Update()
     {
-        if (counter + 1 <= framesBetweenHits)
-        {
-            if (!thisAnimator.GetCurrentAnimatorStateInfo(0).IsTag("Attack"))
-                counter++;
-        }
-        else
+        if (Time.time - timeCounter >= secondsBetweenHits)
         {
             bool breakAll = false;
             Collider2D[] colliders = Physics2D.OverlapAreaAll(startRaycastPoint.position, endRaycastPoint.position);
@@ -68,10 +62,9 @@ public class RobotDummyHook : MonoBehaviour {
                             if (collider.CompareTag(tag))
                             {
                                 hitting = true;
-                                facingRight = (thisRigidBody.velocity.x > 0);
                                 gameObject.GetComponent<DamageDealer>().applyDamageOnce(collider.gameObject);
                                 gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
-                                counter = 0;
+                                timeCounter = Time.time;
                                 breakAll = true;
                                 break;
                             }
@@ -80,11 +73,14 @@ public class RobotDummyHook : MonoBehaviour {
         }
         thisAnimator.SetBool("Hook", hitting);
         if (thisAnimator.GetCurrentAnimatorStateInfo(0).IsTag("Attack"))
+        {
             thisSpriteRenderer.sortingLayerName = "Character";
+            gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
+        }
         else
             thisSpriteRenderer.sortingLayerName = "EnemyRobot";
-        if (!hitting && !thisAnimator.GetCurrentAnimatorStateInfo(0).IsTag("Attack") && thisRigidBody.velocity.x == 0)
-            if (facingRight)
+        if (!hitting && !thisAnimator.GetCurrentAnimatorStateInfo(0).IsTag("Attack") && (Mathf.Abs(thisRigidBody.velocity.x) < xVelocity))
+            if (transform.localScale.x >= 0)
                 thisRigidBody.velocity = new Vector2(xVelocity, 0);
             else
                 thisRigidBody.velocity = new Vector2(-xVelocity, 0);

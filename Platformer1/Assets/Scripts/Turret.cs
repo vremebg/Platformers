@@ -8,7 +8,7 @@ public class Turret : MonoBehaviour {
     float range = 5;
 
     [SerializeField]
-    int framesPerShot = 10;
+    float secondsBetweenShots = 0.8f;
 
     [SerializeField]
     string targetTags;
@@ -30,7 +30,8 @@ public class Turret : MonoBehaviour {
 
     string[] tags;
 
-    int counter = 10;
+    float timeCounter = 0;
+    bool shootTrigger;
 
     void Start()
     {
@@ -39,12 +40,9 @@ public class Turret : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void FixedUpdate () {
-        counter++;
-        if (counter >= framesPerShot)
-            counter = framesPerShot;
-
-        if (counter >= framesPerShot)
+    void Update () {
+        shootTrigger = false;
+        if (Time.time - timeCounter >= secondsBetweenShots)
         {
             Collider2D[] targetsInArea = Physics2D.OverlapCircleAll(this.transform.position, range);
             if (targetsInArea.Length != 0)
@@ -70,7 +68,8 @@ public class Turret : MonoBehaviour {
                                 ammos[ammos.Length - 1].GetComponent<TurretAmmo>().setInitialVelocity(dx, dy);
                                 if (dx < 0)
                                     ammos[ammos.Length - 1].transform.localScale = new Vector2(ammos[ammos.Length - 1].transform.localScale.x * -1, ammos[ammos.Length - 1].transform.localScale.y);
-                                counter = 0;
+                                timeCounter = Time.time;
+                                shootTrigger = true;
                                 stopCheck = true;
                                 break;
                             }
@@ -81,6 +80,6 @@ public class Turret : MonoBehaviour {
                 }
             }
         }
-        turretAnimator.SetBool("TurretShoot", counter == 0);
+        turretAnimator.SetBool("TurretShoot", shootTrigger);
     }
 }

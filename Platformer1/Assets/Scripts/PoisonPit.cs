@@ -4,19 +4,24 @@ using UnityEngine;
 
 public class PoisonPit : MonoBehaviour {
 
-    [SerializeField]
-    float dps = 25;
+    private class Receiver
+    {
+        public float timeCounter;
+        public GameObject obj = new GameObject();
+    }
+
+    LinkedList<Receiver> receivers = new LinkedList<Receiver>();
+    LinkedList<Receiver> itemsToRemove = new LinkedList<Receiver>();
 
     [SerializeField]
-    int framesBetweenDamage = 4;
+    float dps = 20;
+
+    [SerializeField]
+    float secondsBetweenDamage = 0.1f;
 
     [SerializeField]
     string targetTags;
 
-    bool start = false;
-    int counter = 0;
-
-    GameObject receiver;
     string[] tags;
 
     // Use this for initialization
@@ -24,14 +29,29 @@ public class PoisonPit : MonoBehaviour {
         tags = targetTags.Split(',');
     }
 
-    void FixedUpdate()
+    void Update()
     {
-        counter++;
-        if (counter > framesBetweenDamage) counter = framesBetweenDamage;
-        if (start && receiver != null && counter == framesBetweenDamage)
+        if (receivers != null)
         {
-            gameObject.GetComponent<DamageDealer>().applyDamageOnce(receiver, framesBetweenDamage * dps * Time.deltaTime);
-            counter = 0;
+            foreach (Receiver receiver in receivers)
+                if (Time.time - receiver.timeCounter >= secondsBetweenDamage)
+                {
+                    if (receiver.obj != null)
+                    {
+                        gameObject.GetComponent<DamageDealer>().applyDamageOnce(receiver.obj, dps * (Time.time - receiver.timeCounter));
+                        receiver.timeCounter = Time.time;
+                    }
+                    else
+                        itemsToRemove.AddLast(receiver);
+                }
+            if (itemsToRemove.Count != 0)
+            {
+                foreach (Receiver temp in itemsToRemove)
+                {
+                    receivers.Remove(temp);
+                }
+                itemsToRemove.Clear();
+            }
         }
     }
 	
@@ -40,8 +60,10 @@ public class PoisonPit : MonoBehaviour {
         foreach (string tag in tags)
             if (collider.gameObject.CompareTag(tag))
             {
-                start = true;
-                receiver = collider.gameObject;
+                Receiver temp = new Receiver();
+                temp.obj = collider.gameObject;
+                temp.timeCounter = Time.time;
+                receivers.AddLast(temp);
             }
     }
 
@@ -49,6 +71,18 @@ public class PoisonPit : MonoBehaviour {
     {
         foreach (string tag in tags)
             if (collider.gameObject.CompareTag(tag))
-            start = false;
+            {
+                foreach (Receiver receiver in receivers)
+                    if (receiver.obj.Equals(collider.gameObject))
+                        itemsToRemove.AddLast(receiver);
+            }
+        if (itemsToRemove.Count != 0)
+        {
+            foreach (Receiver temp in itemsToRemove)
+            {
+                receivers.Remove(temp);
+            }
+            itemsToRemove.Clear();
+        }
     }
 }

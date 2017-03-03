@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DamageNumbers : MonoBehaviour {
 
-    public class numToShow
+    private class numToShow
     {
         public float deviationX;
         public float angle;
@@ -21,7 +21,7 @@ public class DamageNumbers : MonoBehaviour {
     float deviationY = 0.3f;
 
     [SerializeField]
-    float speed = 0.1f;
+    float speedInSeconds = 5f;
 
     [SerializeField]
     float spacingX = 0.4f;
@@ -37,12 +37,12 @@ public class DamageNumbers : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void FixedUpdate () {
+	void Update () {
 		if (nums.Count != 0)
         {
             foreach (numToShow temp in nums)
             {
-                temp.angle += speed;
+                temp.angle += speedInSeconds * Time.deltaTime;
                 if (temp.angle > 0)
                 {
                     foreach (GameObject tempObj in temp.sprites)
@@ -102,8 +102,20 @@ public class DamageNumbers : MonoBehaviour {
             temp.initialX = sprGameObj.transform.position.x;
             temp.initialY = sprGameObj.transform.position.y;
             temp.sprites.Add(sprGameObj);
+            Destroy(sprGameObj, 0.5f);
             count++;
         }
         nums.AddLast(temp);
+    }
+
+    public void destroyAll()
+    {
+        foreach (numToShow temp in nums)
+        {
+            foreach (GameObject tempObj in temp.sprites)
+            {
+                Destroy(tempObj);
+            }
+        }
     }
 }

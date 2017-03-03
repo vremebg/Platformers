@@ -14,7 +14,7 @@ public class Barrel : MonoBehaviour {
         barrelHealth = gameObject.GetComponent<Health>();
     }
 
-    void FixedUpdate()
+    void Update()
     {
         if (barrelHealth.healthDepleted())
         {

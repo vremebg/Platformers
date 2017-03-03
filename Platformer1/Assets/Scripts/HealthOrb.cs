@@ -17,7 +17,7 @@ public class HealthOrb : MonoBehaviour {
     float maxDeviationX = 0.1f;
 
     [SerializeField]
-    float angleStep = 0.1f;
+    float angleStepPerSecond = 5f;
 
 
     SpriteRenderer orbSpriteRenderer;
@@ -35,12 +35,12 @@ public class HealthOrb : MonoBehaviour {
         initialTransformX = transform.position.x;
     }
 
-    void FixedUpdate()
+    void Update()
     {
         orbSpriteRenderer.color = new Color(1, 1, 1, Mathf.Clamp((Time.time - startOfCooldown)/secondsBetweenHealthGive,0,1));
         if ((Time.time - startOfCooldown) < secondsBetweenHealthGive)
         {
-            angle += angleStep;
+            angle += angleStepPerSecond * Time.deltaTime;
             transform.position = new Vector2(initialTransformX + (maxDeviationX * Mathf.Cos(angle)),
                                             initialTransformY + (maxDeviationY * Mathf.Sin(angle)));
         }

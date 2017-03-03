@@ -23,7 +23,7 @@ public class Health : MonoBehaviour {
     void Start()
     {
         if (isOnHud)
-            hudComponent.GetComponent<Text>().text = health.ToString();
+            hudComponent.GetComponent<Text>().text = "Health " + health.ToString();
     }
 
     public float getHealth()
@@ -37,7 +37,7 @@ public class Health : MonoBehaviour {
         if (health > maxHealth)
             health = maxHealth;
         if (isOnHud)
-            hudComponent.GetComponent<Text>().text = health.ToString();
+            hudComponent.GetComponent<Text>().text = "Health " + health.ToString();
 
         if(showDamageNumbersOnChange)
             gameObject.GetComponent<DamageNumbers>().addNumberToDisplay((int)change);

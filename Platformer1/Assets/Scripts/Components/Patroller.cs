@@ -21,17 +21,21 @@ public class Patroller : MonoBehaviour {
 
     Rigidbody2D thisRigidBody;
     Collider2D thisCollider;
+    Transform thisTransform;
 
     float maxX;
     float minX;
 
     float patrollerMinX;
     float patrollerMaxX;
+    bool leftHit = false;
+    bool rightHit = false;
 
 	// Use this for initialization
 	void Start () {
         thisRigidBody = gameObject.GetComponent<Rigidbody2D>();
         thisCollider = gameObject.GetComponent<Collider2D>();
+        thisTransform = gameObject.GetComponent<Transform>();
         if (betweenPoints &&  leftPoint != null && rightPoint != null)
         {
             minX = leftPoint.position.x;
@@ -45,13 +49,22 @@ public class Patroller : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void FixedUpdate () {
-        patrollerMinX = thisCollider.bounds.min.x;
-        patrollerMaxX = thisCollider.bounds.max.x; //+ thisRigidBody.velocity.x * Time.deltaTime;
-        if (patrollerMinX <= minX || patrollerMaxX >= maxX)
+    void Update () {
+        patrollerMinX = thisCollider.bounds.min.x + thisRigidBody.velocity.x * Time.deltaTime;
+        patrollerMaxX = thisCollider.bounds.max.x + thisRigidBody.velocity.x * Time.deltaTime;
+        if (patrollerMinX <= minX && !leftHit)
         {
-            thisRigidBody.velocity = new Vector2(-thisRigidBody.velocity.x, thisRigidBody.velocity.y);
-            gameObject.transform.localScale = new Vector2(-gameObject.transform.localScale.x, gameObject.transform.localScale.y);
+            leftHit = true;
+            rightHit = false;
+            thisRigidBody.velocity = new Vector2(Mathf.Abs(thisRigidBody.velocity.x), thisRigidBody.velocity.y);
+            gameObject.transform.localScale = new Vector2(Mathf.Abs(gameObject.transform.localScale.x), gameObject.transform.localScale.y);
+        }
+        else if (patrollerMaxX >= maxX && !rightHit)
+        {
+            leftHit = false;
+            rightHit = true;
+            thisRigidBody.velocity = new Vector2(-Mathf.Abs(thisRigidBody.velocity.x), thisRigidBody.velocity.y);
+            gameObject.transform.localScale = new Vector2(-Mathf.Abs(gameObject.transform.localScale.x), gameObject.transform.localScale.y);
         }
     }
 }
