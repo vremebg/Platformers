@@ -19,6 +19,9 @@ public class Character : MonoBehaviour {
     float jumpVelocity = 5;
 
     [SerializeField]
+    float maxJumpAngle = 30;
+
+    [SerializeField]
     float walkVelocityPerSecond = 250;
 
     Rigidbody2D characterRigidBody;
@@ -29,6 +32,7 @@ public class Character : MonoBehaviour {
     bool isMoving = false;
     bool jumpedInThisFrame = false;
     bool triggered = false;
+    bool canJump = false;
 
     // Use this for initialization
     void Start () {
@@ -39,7 +43,7 @@ public class Character : MonoBehaviour {
     void HandleInput()
     {
         Vector3 localScale = gameObject.transform.localScale;
-        if (Input.GetKey(KeyCode.W) && charState == characterState.onTheGround)
+        if (Input.GetKey(KeyCode.W) && charState == characterState.onTheGround && canJump)
         {
             characterRigidBody.velocity = new Vector2(characterRigidBody.velocity.x, jumpVelocity);
             charState = characterState.jumping;
@@ -87,6 +91,7 @@ public class Character : MonoBehaviour {
         isMoving = false;
         jumpedInThisFrame = false;
         triggered = false;
+        canJump = false;
     }
 
     void ChangeScaleFacing(Vector3 localScale)
@@ -104,14 +109,16 @@ public class Character : MonoBehaviour {
         HandleInput();
         SetAnimations();
         ResetBoolAnimValues();
-        GameObject temp = GameObject.Find("Velocity");
-        temp.GetComponent<Text>().text = "Velocity.x " + characterRigidBody.velocity.x.ToString();
 	}
 
     private void OnTriggerStay2D(Collider2D collider)
     {
         if ((collider.gameObject.CompareTag("Ground") || collider.gameObject.CompareTag("Platform")) && !collider.isTrigger)
         {
+            float angle = collider.gameObject.transform.rotation.eulerAngles.z;
+            if (angle > 180) angle = 360 - angle;
+            if (angle <= maxJumpAngle)
+                canJump = true;
             charState = characterState.onTheGround;
             triggered = true;
         }
