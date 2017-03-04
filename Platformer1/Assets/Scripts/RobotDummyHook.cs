@@ -32,19 +32,6 @@ public class RobotDummyHook : MonoBehaviour {
         thisRigidBody.velocity = new Vector2(xVelocity, 0);
         thisAnimator = gameObject.GetComponent<Animator>();
         tags = targetTags.Split(',');
-        if (tags != null && tags.Length != 0)
-            foreach (string tag in tags)
-            {
-                GameObject[] objects = GameObject.FindGameObjectsWithTag(tag);
-                if (objects != null && objects.Length != 0)
-                    foreach (GameObject obj in objects)
-                    {
-                        Collider2D[] colliders = obj.GetComponents<Collider2D>();
-                        if (colliders != null && colliders.Length != 0)
-                            foreach (Collider2D objCollider in colliders)
-                                Physics2D.IgnoreCollision(objCollider, gameObject.GetComponent<BoxCollider2D>(), true);
-                    }
-            }
         timeCounter = Time.time;
     }
 
