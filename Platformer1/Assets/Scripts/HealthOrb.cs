@@ -51,9 +51,9 @@ public class HealthOrb : MonoBehaviour {
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collider)
+    private void OnTriggerStay2D(Collider2D collider)
     {
-        if (collider.gameObject.CompareTag("Character") && ((Time.time - secondsBetweenHealthGive) >= startOfCooldown))
+        if (collider.gameObject.CompareTag("Character") && !collider.isTrigger && ((Time.time - secondsBetweenHealthGive) >= startOfCooldown))
         {
             if (!gameObject.GetComponent<HealthGiver>().isHealthMaxed(collider.gameObject))
             {

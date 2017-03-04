@@ -20,6 +20,12 @@ public class Health : MonoBehaviour {
     [SerializeField]
     private bool showDamageNumbersOnChange = false;
 
+    [SerializeField]
+    private bool showHealth = false;
+
+    [SerializeField]
+    private GameObject healthSpriteObj;
+
     void Start()
     {
         if (isOnHud)
@@ -36,11 +42,15 @@ public class Health : MonoBehaviour {
         health += change;
         if (health > maxHealth)
             health = maxHealth;
+        if (health < 0)
+            health = 0;
         if (isOnHud)
             hudComponent.GetComponent<Text>().text = "Health " + health.ToString();
 
         if(showDamageNumbersOnChange)
             gameObject.GetComponent<DamageNumbers>().addNumberToDisplay((int)change);
+        if (showHealth)
+            healthSpriteObj.transform.localScale = new Vector2(health/maxHealth, healthSpriteObj.transform.localScale.y);
     }
 
     public bool healthDepleted()
