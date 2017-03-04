@@ -22,8 +22,6 @@ public class Character : MonoBehaviour {
     float walkVelocityPerSecond = 250;
 
     Rigidbody2D characterRigidBody;
-    Collider2D charCapsuleCollider;
-    Collider2D charOnTheGroundCollider;
     Animator characterAnimator;
 
     characterState charState;
@@ -36,8 +34,6 @@ public class Character : MonoBehaviour {
     void Start () {
         characterRigidBody = gameObject.GetComponent<Rigidbody2D>();
         characterAnimator = gameObject.GetComponent<Animator>();
-        charCapsuleCollider = gameObject.GetComponent<Collider2D>();
-        charOnTheGroundCollider = gameObject.GetComponents<Collider2D>()[1];
     }
 
     void HandleInput()
