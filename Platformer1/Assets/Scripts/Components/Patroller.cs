@@ -21,7 +21,6 @@ public class Patroller : MonoBehaviour {
 
     Rigidbody2D thisRigidBody;
     Collider2D thisCollider;
-    Transform thisTransform;
 
     float maxX;
     float minX;
@@ -35,7 +34,6 @@ public class Patroller : MonoBehaviour {
 	void Start () {
         thisRigidBody = gameObject.GetComponent<Rigidbody2D>();
         thisCollider = gameObject.GetComponent<Collider2D>();
-        thisTransform = gameObject.GetComponent<Transform>();
         if (betweenPoints &&  leftPoint != null && rightPoint != null)
         {
             minX = leftPoint.position.x;

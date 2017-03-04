@@ -22,19 +22,22 @@ public class Character : MonoBehaviour {
     float walkVelocityPerSecond = 250;
 
     Rigidbody2D characterRigidBody;
-    Collider2D charBoxCollider;
+    Collider2D charCapsuleCollider;
+    Collider2D charOnTheGroundCollider;
     Animator characterAnimator;
 
     characterState charState;
     characterFacing charFacing = characterFacing.left;
     bool isMoving = false;
     bool jumpedInThisFrame = false;
+    bool triggered = false;
 
     // Use this for initialization
     void Start () {
         characterRigidBody = gameObject.GetComponent<Rigidbody2D>();
         characterAnimator = gameObject.GetComponent<Animator>();
-        charBoxCollider = gameObject.GetComponent<Collider2D>();
+        charCapsuleCollider = gameObject.GetComponent<Collider2D>();
+        charOnTheGroundCollider = gameObject.GetComponents<Collider2D>()[1];
     }
 
     void HandleInput()
@@ -87,6 +90,7 @@ public class Character : MonoBehaviour {
     {
         isMoving = false;
         jumpedInThisFrame = false;
+        triggered = false;
     }
 
     void ChangeScaleFacing(Vector3 localScale)
@@ -97,7 +101,10 @@ public class Character : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        CollisionHandling();
+        if (characterRigidBody.velocity.y < 0 && !triggered)
+        {
+            charState = characterState.falling;
+        }
         HandleInput();
         SetAnimations();
         ResetBoolAnimValues();
@@ -105,26 +112,12 @@ public class Character : MonoBehaviour {
         temp.GetComponent<Text>().text = "Velocity.x " + characterRigidBody.velocity.x.ToString();
 	}
 
-    private void CollisionHandling()
+    private void OnTriggerStay2D(Collider2D collider)
     {
-        if (characterRigidBody.velocity.y <= 0)
+        if ((collider.gameObject.CompareTag("Ground") || collider.gameObject.CompareTag("Platform")) && !collider.isTrigger)
         {
-            bool isFalling = true;
-            Collider2D[] check = Physics2D.OverlapAreaAll(new Vector2(charBoxCollider.bounds.min.x + charBoxCollider.bounds.size.x / 2, charBoxCollider.bounds.min.y),
-new Vector2(charBoxCollider.bounds.min.x + charBoxCollider.bounds.size.x/2, charBoxCollider.bounds.min.y - 0.001f));
-            if (check.Length != 0)
-                foreach (Collider2D temp in check)
-                {
-                    if (temp.gameObject.CompareTag("Ground") || temp.gameObject.CompareTag("Platform") && !temp.isTrigger)
-                    {
-                        isFalling = false;
-                        break;
-                    }
-                }
-            if (isFalling)
-                charState = characterState.falling;
-            else
-                charState = characterState.onTheGround;
+            charState = characterState.onTheGround;
+            triggered = true;
         }
     }
 }

@@ -7,6 +7,8 @@ public class Platform : MonoBehaviour {
     [SerializeField]
     string passingTags = "Character,Enemy";
 
+    List<Collider2D> checkedCollidersInThisFrame = new List<Collider2D>();
+
     string[] tags;
 
     // Use this for initialization
@@ -31,8 +33,9 @@ public class Platform : MonoBehaviour {
     {
         if (tags != null && tags.Length != 0)
             foreach (string tag in tags)
-                if (collider.gameObject.CompareTag(tag)) //&& charState == characterState.inAir)
+                if (collider.gameObject.CompareTag(tag) && !checkedCollidersInThisFrame.Contains(collider))
                 {
+                    checkedCollidersInThisFrame.Add(collider);
                     float checkY = collider.gameObject.GetComponent<Collider2D>().bounds.min.y;
                     Vector3 max = gameObject.GetComponents<BoxCollider2D>()[0].bounds.max;
                     if (checkY >= max.y)
@@ -43,6 +46,17 @@ public class Platform : MonoBehaviour {
                     {
                         Physics2D.IgnoreCollision(collider, gameObject.GetComponents<BoxCollider2D>()[0], true);
                     }
+                }
+    }
+
+    private void OnTriggerExit2D(Collider2D collider)
+    {
+        if (tags != null && tags.Length != 0)
+            foreach (string tag in tags)
+                if (collider.gameObject.CompareTag(tag))
+                {
+                    Physics2D.IgnoreCollision(collider, gameObject.GetComponents<BoxCollider2D>()[0], true);
+                    checkedCollidersInThisFrame.Remove(collider);
                 }
     }
 }
