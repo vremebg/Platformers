@@ -29,8 +29,8 @@ public class DamageNumbers : MonoBehaviour {
     [SerializeField]
     GameObject gameObj;
 
-    LinkedList<numToShow> nums = new LinkedList<numToShow>();
-    LinkedList<numToShow> itemsToRemove = new LinkedList<numToShow>();
+    List<numToShow> nums = new List<numToShow>();
+    List<numToShow> itemsToRemove = new List<numToShow>();
 
     // Use this for initialization
     void Start () {
@@ -49,7 +49,7 @@ public class DamageNumbers : MonoBehaviour {
                     {
                         Destroy(tempObj);
                     }
-                    itemsToRemove.AddLast(temp);
+                    itemsToRemove.Add(temp);
                 }
                 else
                 {
@@ -105,7 +105,7 @@ public class DamageNumbers : MonoBehaviour {
             Destroy(sprGameObj, 0.5f);
             count++;
         }
-        nums.AddLast(temp);
+        nums.Add(temp);
     }
 
     public void destroyAll()

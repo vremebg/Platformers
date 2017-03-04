@@ -7,11 +7,11 @@ public class PoisonPit : MonoBehaviour {
     private class Receiver
     {
         public float timeCounter;
-        public GameObject obj = new GameObject();
+        public GameObject obj;
     }
 
-    LinkedList<Receiver> receivers = new LinkedList<Receiver>();
-    LinkedList<Receiver> itemsToRemove = new LinkedList<Receiver>();
+    List<Receiver> receivers = new List<Receiver>();
+    List<Receiver> itemsToRemove = new List<Receiver>();
 
     [SerializeField]
     float dps = 20;
@@ -31,7 +31,7 @@ public class PoisonPit : MonoBehaviour {
 
     void Update()
     {
-        if (receivers != null)
+        if (receivers != null && receivers.Count > 0)
         {
             foreach (Receiver receiver in receivers)
                 if (Time.time - receiver.timeCounter >= secondsBetweenDamage)
@@ -42,7 +42,7 @@ public class PoisonPit : MonoBehaviour {
                         receiver.timeCounter = Time.time;
                     }
                     else
-                        itemsToRemove.AddLast(receiver);
+                        itemsToRemove.Add(receiver);
                 }
             if (itemsToRemove.Count != 0)
             {
@@ -58,23 +58,23 @@ public class PoisonPit : MonoBehaviour {
     private void OnTriggerEnter2D(Collider2D collider)
     {
         foreach (string tag in tags)
-            if (collider.gameObject.CompareTag(tag))
+            if (collider.gameObject.CompareTag(tag) && !collider.isTrigger)
             {
                 Receiver temp = new Receiver();
                 temp.obj = collider.gameObject;
                 temp.timeCounter = Time.time;
-                receivers.AddLast(temp);
+                receivers.Add(temp);
             }
     }
 
     private void OnTriggerExit2D(Collider2D collider)
     {
         foreach (string tag in tags)
-            if (collider.gameObject.CompareTag(tag))
+            if (collider.gameObject.CompareTag(tag) && !collider.isTrigger)
             {
                 foreach (Receiver receiver in receivers)
                     if (receiver.obj.Equals(collider.gameObject))
-                        itemsToRemove.AddLast(receiver);
+                        itemsToRemove.Add(receiver);
             }
         if (itemsToRemove.Count != 0)
         {
