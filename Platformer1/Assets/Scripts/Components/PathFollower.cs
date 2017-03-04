@@ -8,13 +8,16 @@ public class PathFollower : MonoBehaviour {
     float speedAroundThePathPerSecond = 1.5f;
 
     [SerializeField]
-    GameObject platform;
+    public GameObject platform;
 
     [SerializeField]
     GameObject[] points;
 
     int currentPoint = 0;
     int nextPoint = 1;
+
+    public float dx = 0;
+    public float dy = 0;
 
     float x;
     float y;
@@ -94,6 +97,8 @@ public class PathFollower : MonoBehaviour {
         x = predictedX;
         y = predictedY;
 
+        dx = x - platform.transform.position.x;
+        dy = y - platform.transform.position.y;
         platform.transform.position = new Vector2(x, y);
     }
 

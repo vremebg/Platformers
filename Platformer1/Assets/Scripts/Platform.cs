@@ -8,6 +8,7 @@ public class Platform : MonoBehaviour {
     string passingTags = "Character,Enemy";
 
     List<Collider2D> checkedCollidersInThisFrame = new List<Collider2D>();
+    public List<Collider2D> offendersOnPlatform = new List<Collider2D>();
 
     string[] tags;
 
@@ -58,5 +59,21 @@ public class Platform : MonoBehaviour {
                     Physics2D.IgnoreCollision(collider, gameObject.GetComponents<BoxCollider2D>()[0], true);
                     checkedCollidersInThisFrame.Remove(collider);
                 }
+    }
+
+    private void OnCollisionEnter2D(Collision2D col)
+    {
+        if (tags != null && tags.Length != 0)
+            foreach (string tag in tags)
+                if (col.collider.gameObject.CompareTag(tag))
+                    offendersOnPlatform.Add(col.collider);
+    }
+
+    private void OnCollisionExit2D(Collision2D col)
+    {
+        if (tags != null && tags.Length != 0)
+            foreach (string tag in tags)
+                if (col.collider.gameObject.CompareTag(tag))
+                    offendersOnPlatform.Remove(col.collider);
     }
 }
