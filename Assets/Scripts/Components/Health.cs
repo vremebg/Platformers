@@ -29,7 +29,7 @@ public class Health : MonoBehaviour {
     void Start()
     {
         if (isOnHud)
-            hudComponent.GetComponent<Text>().text = "Health " + health.ToString();
+            hudComponent.GetComponent<Text>().text = ((int)health).ToString();
     }
 
     public float getHealth()
@@ -45,7 +45,7 @@ public class Health : MonoBehaviour {
         if (health < 0)
             health = 0;
         if (isOnHud)
-            hudComponent.GetComponent<Text>().text = "Health " + health.ToString();
+            hudComponent.GetComponent<Text>().text = ((int)health).ToString();
 
         if(showDamageNumbersOnChange)
             gameObject.GetComponent<DamageNumbers>().addNumberToDisplay((int)change);

@@ -132,5 +132,11 @@ public class Character : MonoBehaviour {
                 walkVelocityPerSecond = maxWalkVelocityPerSecond;
             triggered = true;
         }
+        if (collider.gameObject.CompareTag("Barrel"))
+        {
+            charState = characterState.onTheGround;
+            canJump = true;
+            triggered = true;
+        }
     }
 }

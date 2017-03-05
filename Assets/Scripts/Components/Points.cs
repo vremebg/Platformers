@@ -20,7 +20,7 @@ public class Points : MonoBehaviour {
     void Start()
     {
         if (isOnHud)
-            hudComponent.GetComponent<Text>().text = "Points " + points.ToString();
+            hudComponent.GetComponent<Text>().text = points.ToString();
     }
 
     public float getPoints()
@@ -34,7 +34,7 @@ public class Points : MonoBehaviour {
         if (points < 0)
             points = 0;
         if (isOnHud)
-            hudComponent.GetComponent<Text>().text = "Points " + points.ToString();
+            hudComponent.GetComponent<Text>().text = points.ToString();
     }
 
     public bool pointsDepleted()
