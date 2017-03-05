@@ -1,16 +1,34 @@
+NOW:
+------------------------------------------------------
 1.HUD design and implementation - health, points,time
+0.Figure out how to kill enemies - jumping or shooting or what?
 2.coins add to levels, count coins taken
-3.portal - move to another place - one-way and two-way
 4."portal"?-next level
+3.portal - move to another place - one-way and two-way
 5.Death event - animation, restart level
 6. level complete animation on screen ("Victory! points,time ....")
 7. Time counter on HUD
-8. leaderboard
 9. mainmenu, level select
 10. bigger barrel explosion effect
 11.boss level - big enemy and some small
+
+LATER:
+------------------------------------------------------
 12 Options? directly on main menu screen
 13. cell-phone/tablet controls
-14. design 10 levels
+14. design 10 levels 3x3+1 final: level-level-boss, level-level-boss, level-level-boss, big boss.
+15. Powerup
+18. Choose a good name for the character and the game.
+
+
+MUCH LATER:
+------------------------------------------------------
+8. leaderboard
+17. Add advertisements?
+28. Find art and music. 
+
+EVEN LATER:
+------------------------------------------------------
+20. Publish to Android market
 
 these are NOT in order of importance
