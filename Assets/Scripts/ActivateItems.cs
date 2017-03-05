@@ -12,6 +12,8 @@ public class ActivateItems : MonoBehaviour {
 
     float x;
     float y;
+    float objSizeX;
+    float objSizeY;
 
     void Start()
     {
@@ -25,15 +27,29 @@ public class ActivateItems : MonoBehaviour {
         {
             if (!temp.gameObject.CompareTag("Character") && !temp.gameObject.CompareTag("Root")
                 && !temp.gameObject.CompareTag("Untagged") && !temp.gameObject.CompareTag("MainCamera"))
-                if (temp.position.x + x> gameObject.transform.position.x && temp.position.x - x < gameObject.transform.position.x)
+            {
+                if (temp.gameObject.GetComponent<SpriteRenderer>() != null)
                 {
-                    if (temp.position.y + y > gameObject.transform.position.y && temp.position.y - y < gameObject.transform.position.y)
+                    objSizeX = temp.gameObject.GetComponent<SpriteRenderer>().bounds.size.x / 2;
+                    objSizeY = temp.gameObject.GetComponent<SpriteRenderer>().bounds.size.y / 2;
+                }
+                else
+                {
+                    objSizeX = 0;
+                    objSizeY = 0;
+                }
+                if (temp.position.x + objSizeX + x > gameObject.transform.position.x
+                    && temp.position.x - objSizeX / 2 - x < gameObject.transform.position.x)
+                {
+                    if (temp.position.y + objSizeY / 2 + y > gameObject.transform.position.y
+                        && temp.position.y - objSizeY - y < gameObject.transform.position.y)
                         temp.gameObject.SetActive(true);
                     else
                         temp.gameObject.SetActive(false);
                 }
                 else
                     temp.gameObject.SetActive(false);
+            }
         }
     }
 }
