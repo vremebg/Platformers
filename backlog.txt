@@ -1,8 +1,8 @@
 NOW:
 ------------------------------------------------------
-1.HUD design and implementation - health, points,time
+DONE - 1.HUD design and implementation - health, points,time
 0.Figure out how to kill enemies - jumping or shooting or what?
-2.coins add to levels, count coins taken
+DONE - 2.coins add to levels, count coins taken
 4."portal"?-next level
 3.portal - move to another place - one-way and two-way
 5.Death event - animation, restart level
