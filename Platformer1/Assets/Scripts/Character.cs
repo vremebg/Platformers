@@ -22,8 +22,9 @@ public class Character : MonoBehaviour {
     float maxJumpAngle = 30;
 
     [SerializeField]
-    float walkVelocityPerSecond = 250;
+    float maxWalkVelocityPerSecond = 250;
 
+    float walkVelocityPerSecond;
     Rigidbody2D characterRigidBody;
     Animator characterAnimator;
 
@@ -33,11 +34,13 @@ public class Character : MonoBehaviour {
     bool jumpedInThisFrame = false;
     bool triggered = false;
     bool canJump = false;
+    float lastFrameCharacterY;
 
     // Use this for initialization
     void Start () {
         characterRigidBody = gameObject.GetComponent<Rigidbody2D>();
         characterAnimator = gameObject.GetComponent<Animator>();
+        lastFrameCharacterY = transform.position.y;
     }
 
     void HandleInput()
@@ -92,6 +95,7 @@ public class Character : MonoBehaviour {
         jumpedInThisFrame = false;
         triggered = false;
         canJump = false;
+        lastFrameCharacterY = transform.position.y;
     }
 
     void ChangeScaleFacing(Vector3 localScale)
@@ -102,10 +106,12 @@ public class Character : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (characterRigidBody.velocity.y < 0 && !triggered)
+        if (characterRigidBody.velocity.y < 0 && !triggered && charState != characterState.onTheGround)
         {
             charState = characterState.falling;
         }
+        if (charState != characterState.onTheGround)
+            walkVelocityPerSecond = maxWalkVelocityPerSecond;
         HandleInput();
         SetAnimations();
         ResetBoolAnimValues();
@@ -120,6 +126,10 @@ public class Character : MonoBehaviour {
             if (angle <= maxJumpAngle)
                 canJump = true;
             charState = characterState.onTheGround;
+            if (angle != 0 && transform.position.y >= lastFrameCharacterY)
+                walkVelocityPerSecond = maxWalkVelocityPerSecond * (90 - angle) / 90;
+            else
+                walkVelocityPerSecond = maxWalkVelocityPerSecond;
             triggered = true;
         }
     }
