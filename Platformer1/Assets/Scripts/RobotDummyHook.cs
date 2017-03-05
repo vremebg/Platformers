@@ -66,7 +66,7 @@ public class RobotDummyHook : MonoBehaviour {
         }
         else
             thisSpriteRenderer.sortingLayerName = "EnemyRobot";
-        if (!hitting && !thisAnimator.GetCurrentAnimatorStateInfo(0).IsTag("Attack") && (Mathf.Abs(thisRigidBody.velocity.x) < xVelocity))
+        if (!hitting && !thisAnimator.GetCurrentAnimatorStateInfo(0).IsTag("Attack") && (Mathf.Abs(thisRigidBody.velocity.x) != xVelocity))
             if (transform.localScale.x >= 0)
                 thisRigidBody.velocity = new Vector2(xVelocity, 0);
             else
