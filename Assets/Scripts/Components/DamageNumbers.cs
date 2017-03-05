@@ -29,6 +29,9 @@ public class DamageNumbers : MonoBehaviour {
     [SerializeField]
     GameObject gameObj;
 
+    [SerializeField]
+    float lifetimeSeconds = 0.5f;
+
     List<numToShow> nums = new List<numToShow>();
     List<numToShow> itemsToRemove = new List<numToShow>();
 
@@ -102,7 +105,7 @@ public class DamageNumbers : MonoBehaviour {
             temp.initialX = sprGameObj.transform.position.x;
             temp.initialY = sprGameObj.transform.position.y;
             temp.sprites.Add(sprGameObj);
-            Destroy(sprGameObj, 0.5f);
+            Destroy(sprGameObj, lifetimeSeconds);
             count++;
         }
         nums.Add(temp);
