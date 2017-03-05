@@ -19,7 +19,7 @@ LATER:
 14. design 10 levels 3x3+1 final: level-level-boss, level-level-boss, level-level-boss, big boss.
 15. Powerup
 18. Choose a good name for the character and the game.
-
+?. Clouds, birds, junk on the ground
 
 MUCH LATER:
 ------------------------------------------------------
