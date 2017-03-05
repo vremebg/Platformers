@@ -1,0 +1,16 @@
+1.HUD design and implementation - health, points,time
+2.coins add to levels, count coins taken
+3.portal - move to another place - one-way and two-way
+4."portal"?-next level
+5.Death event - animation, restart level
+6. level complete animation on screen ("Victory! points,time ....")
+7. Time counter on HUD
+8. leaderboard
+9. mainmenu, level select
+10. bigger barrel explosion effect
+11.boss level - big enemy and some small
+12 Options? directly on main menu screen
+13. cell-phone/tablet controls
+14. design 10 levels
+
+these are NOT in order of importance
