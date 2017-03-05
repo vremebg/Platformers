@@ -39,9 +39,9 @@ public class ActivateItems : MonoBehaviour {
                     objSizeY = 0;
                 }
                 if (temp.position.x + objSizeX + x > gameObject.transform.position.x
-                    && temp.position.x - objSizeX / 2 - x < gameObject.transform.position.x)
+                    && temp.position.x - objSizeX - x < gameObject.transform.position.x)
                 {
-                    if (temp.position.y + objSizeY / 2 + y > gameObject.transform.position.y
+                    if (temp.position.y + objSizeY + y > gameObject.transform.position.y
                         && temp.position.y - objSizeY - y < gameObject.transform.position.y)
                         temp.gameObject.SetActive(true);
                     else
