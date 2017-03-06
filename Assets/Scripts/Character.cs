@@ -29,7 +29,8 @@ public class Character : MonoBehaviour {
     Animator characterAnimator;
 
     characterState charState;
-    characterFacing charFacing = characterFacing.left;
+    characterFacing charFacing = characterFacing.right;
+
     bool isMoving = false;
     bool jumpedInThisFrame = false;
     bool triggered = false;
