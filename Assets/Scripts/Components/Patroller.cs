@@ -47,7 +47,7 @@ public class Patroller : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update () {
+    void FixedUpdate () {
         patrollerMinX = thisCollider.bounds.min.x + thisRigidBody.velocity.x * Time.deltaTime;
         patrollerMaxX = thisCollider.bounds.max.x + thisRigidBody.velocity.x * Time.deltaTime;
         if (patrollerMinX <= minX && !leftHit)

@@ -106,17 +106,22 @@ public class Character : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
         if (characterRigidBody.velocity.y < 0 && !triggered && charState != characterState.onTheGround)
         {
             charState = characterState.falling;
         }
         if (charState != characterState.onTheGround)
             walkVelocityPerSecond = maxWalkVelocityPerSecond;
+
+    }
+
+    void Update()
+    {
         HandleInput();
         SetAnimations();
         ResetBoolAnimValues();
-	}
+    }
 
     private void OnTriggerStay2D(Collider2D collider)
     {

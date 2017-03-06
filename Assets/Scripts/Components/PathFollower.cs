@@ -110,7 +110,7 @@ public class PathFollower : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
         timedSpeedAroundThePath = speedAroundThePathPerSecond * Time.deltaTime;
         if (points.Length >= 2)
             calcPredictedXY();

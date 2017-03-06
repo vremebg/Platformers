@@ -35,7 +35,7 @@ public class RobotDummyHook : MonoBehaviour {
         timeCounter = Time.time;
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (Time.time - timeCounter >= secondsBetweenHits)
         {

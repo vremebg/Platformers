@@ -35,7 +35,7 @@ public class HealthOrb : MonoBehaviour {
         initialTransformX = transform.position.x;
     }
 
-    void Update()
+    void FixedUpdate()
     {
         orbSpriteRenderer.color = new Color(1, 1, 1, Mathf.Clamp((Time.time - startOfCooldown)/secondsBetweenHealthGive,0,1));
         if ((Time.time - startOfCooldown) < secondsBetweenHealthGive)

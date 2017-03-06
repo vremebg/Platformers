@@ -40,7 +40,7 @@ public class Turret : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update () {
+    void FixedUpdate () {
         shootTrigger = false;
         Collider2D[] targetsInArea = Physics2D.OverlapCircleAll(this.transform.position, range);
         if (targetsInArea.Length != 0)

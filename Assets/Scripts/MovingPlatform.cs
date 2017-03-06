@@ -15,7 +15,7 @@ public class MovingPlatform : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 	    if (objectsFollowPlatformMovement)
         {
             if (pathFollower.platform.GetComponent<Platform>().offendersOnPlatform.Count != 0)
