@@ -31,6 +31,7 @@ public class Character : MonoBehaviour {
     characterState charState;
     characterFacing charFacing = characterFacing.right;
 
+    bool up, left, right = false;
     bool isMoving = false;
     bool jumpedInThisFrame = false;
     bool triggered = false;
@@ -44,16 +45,15 @@ public class Character : MonoBehaviour {
         lastFrameCharacterY = transform.position.y;
     }
 
-    void HandleInput()
+    void HandleMovement()
     {
         Vector3 localScale = gameObject.transform.localScale;
-        if (Input.GetKey(KeyCode.W) && charState == characterState.onTheGround && canJump)
+        if (up && charState == characterState.onTheGround && canJump)
         {
             characterRigidBody.velocity = new Vector2(characterRigidBody.velocity.x, jumpVelocity);
             charState = characterState.jumping;
-            jumpedInThisFrame = true;
         }
-        if (Input.GetKey(KeyCode.A))
+        if (left)
         {
             characterRigidBody.velocity = new Vector2(-walkVelocityPerSecond * Time.deltaTime, characterRigidBody.velocity.y);
             if (charFacing == characterFacing.right)
@@ -61,11 +61,9 @@ public class Character : MonoBehaviour {
                 charFacing = characterFacing.left;
                 ChangeScaleFacing(localScale);
             }
-            if (charState != characterState.jumping || charState != characterState.falling)
-                isMoving = true;
         }
         else
-        if (Input.GetKey(KeyCode.D))
+        if (right)
         {
             characterRigidBody.velocity = new Vector2(walkVelocityPerSecond * Time.deltaTime, characterRigidBody.velocity.y);
             if (charFacing == characterFacing.left)
@@ -73,8 +71,6 @@ public class Character : MonoBehaviour {
                 charFacing = characterFacing.right;
                 ChangeScaleFacing(localScale);
             }
-            if (charState != characterState.jumping || charState != characterState.falling)
-                isMoving = true;
         }
         else
         {
@@ -82,8 +78,21 @@ public class Character : MonoBehaviour {
         }
     }
 
+    void HandleInput()
+    {
+        up = left = right = false;
+        if (Input.GetKey(KeyCode.W)) up = true;
+        if (Input.GetKey(KeyCode.A)) left = true;
+        else if (Input.GetKey(KeyCode.D)) right = true;
+    }
+
     void SetAnimations()
     {
+        if (up && charState == characterState.onTheGround && canJump)
+            jumpedInThisFrame = true;
+        if (left || right)
+            if (charState != characterState.jumping || charState != characterState.falling)
+                isMoving = true;
         characterAnimator.SetBool("Moving", isMoving);
         characterAnimator.SetBool("OnTheGround", (charState == characterState.onTheGround || jumpedInThisFrame));
         characterAnimator.SetBool("Jumping", (charState == characterState.jumping));
@@ -94,6 +103,10 @@ public class Character : MonoBehaviour {
     {
         isMoving = false;
         jumpedInThisFrame = false;
+    }
+
+    void ResetPhysicsValues()
+    {
         triggered = false;
         canJump = false;
         lastFrameCharacterY = transform.position.y;
@@ -113,14 +126,15 @@ public class Character : MonoBehaviour {
         }
         if (charState != characterState.onTheGround)
             walkVelocityPerSecond = maxWalkVelocityPerSecond;
-
+        HandleMovement();
+        ResetPhysicsValues();
     }
 
     void Update()
     {
-        HandleInput();
         SetAnimations();
         ResetBoolAnimValues();
+        HandleInput();
     }
 
     private void OnTriggerStay2D(Collider2D collider)
