@@ -7,6 +7,9 @@ public class RestartLevel : MonoBehaviour {
 
     public void RestartScene()
     {
+        foreach (GameObject temp in SceneManager.GetActiveScene().GetRootGameObjects())
+            temp.SetActive(false);
+        Time.timeScale = 1;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

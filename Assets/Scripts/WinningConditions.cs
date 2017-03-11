@@ -57,6 +57,7 @@ public class WinningConditions : MonoBehaviour {
                 victoryMenu.transform.parent.gameObject.SetActive(true);
                 victoryMenu.SetActive(true);
                 victoryMenu.GetComponentInChildren<Text>().text = healthStr;
+                Time.timeScale = 0;
             }
         if (pointsObjective)
             if (pointsComponent.getPoints() >= pointsCount)
@@ -64,6 +65,7 @@ public class WinningConditions : MonoBehaviour {
                 victoryMenu.transform.parent.gameObject.SetActive(true);
                 victoryMenu.SetActive(true);
                 victoryMenu.GetComponentInChildren<Text>().text = pointsStr;
+                Time.timeScale = 0;
             }
         if (timeObjective)
             if (Time.timeSinceLevelLoad <= timeInSeconds)
@@ -71,6 +73,7 @@ public class WinningConditions : MonoBehaviour {
                 victoryMenu.transform.parent.gameObject.SetActive(true);
                 victoryMenu.SetActive(true);
                 victoryMenu.GetComponentInChildren<Text>().text = timeStr;
+                Time.timeScale = 0;
             }
     }
 }

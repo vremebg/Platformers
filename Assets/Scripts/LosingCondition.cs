@@ -57,6 +57,7 @@ public class LosingCondition : MonoBehaviour {
                 lossMenu.transform.parent.gameObject.SetActive(true);
                 lossMenu.SetActive(true);
                 lossMenu.GetComponentInChildren<Text>().text = healthStr;
+                Time.timeScale = 0;
             }
         if (pointsObjective)
             if (pointsComponent.getPoints() <= pointsCount)
@@ -64,6 +65,7 @@ public class LosingCondition : MonoBehaviour {
                 lossMenu.transform.parent.gameObject.SetActive(true);
                 lossMenu.SetActive(true);
                 lossMenu.GetComponentInChildren<Text>().text = pointsStr;
+                Time.timeScale = 0;
             }
         if (timeObjective)
             if (Time.timeSinceLevelLoad >= timeInSeconds)
@@ -71,6 +73,7 @@ public class LosingCondition : MonoBehaviour {
                 lossMenu.transform.parent.gameObject.SetActive(true);
                 lossMenu.SetActive(true);
                 lossMenu.GetComponentInChildren<Text>().text = timeStr;
+                Time.timeScale = 0;
             }
     }
 }
