@@ -24,6 +24,9 @@ public class Character : MonoBehaviour {
     [SerializeField]
     float maxWalkVelocityPerSecond = 250;
 
+    [SerializeField]
+    Transform[] groundPoints;
+
     float walkVelocityPerSecond;
     Rigidbody2D characterRigidBody;
     Animator characterAnimator;
@@ -120,6 +123,7 @@ public class Character : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
+        CheckGroundPoints();
         if (characterRigidBody.velocity.y < 0 && !triggered && charState != characterState.onTheGround)
         {
             charState = characterState.falling;
@@ -137,26 +141,31 @@ public class Character : MonoBehaviour {
         HandleInput();
     }
 
-    private void OnTriggerStay2D(Collider2D collider)
+    private void CheckGroundPoints()
     {
-        if ((collider.gameObject.CompareTag("Ground") || collider.gameObject.CompareTag("Platform")) && !collider.isTrigger)
-        {
-            float angle = collider.gameObject.transform.rotation.eulerAngles.z;
-            if (angle > 180) angle = 360 - angle;
-            if (angle <= maxJumpAngle)
-                canJump = true;
-            charState = characterState.onTheGround;
-            if (angle != 0 && transform.position.y >= lastFrameCharacterY)
-                walkVelocityPerSecond = maxWalkVelocityPerSecond * (90 - angle) / 90;
-            else
-                walkVelocityPerSecond = maxWalkVelocityPerSecond;
-            triggered = true;
-        }
-        if (collider.gameObject.CompareTag("Barrel"))
-        {
-            charState = characterState.onTheGround;
-            canJump = true;
-            triggered = true;
-        }
+        if (characterRigidBody.velocity.y <=0)
+            foreach (Transform point in groundPoints)
+                foreach (Collider2D collider in Physics2D.OverlapPointAll(point.position))
+                {
+                    if ((collider.gameObject.CompareTag("Ground") || collider.gameObject.CompareTag("Platform")) && !collider.isTrigger)
+                    {
+                        float angle = collider.gameObject.transform.rotation.eulerAngles.z;
+                        if (angle > 180) angle = 360 - angle;
+                        if (angle <= maxJumpAngle)
+                            canJump = true;
+                        charState = characterState.onTheGround;
+                        if (angle != 0 && transform.position.y >= lastFrameCharacterY)
+                            walkVelocityPerSecond = maxWalkVelocityPerSecond * (90 - angle) / 90;
+                        else
+                            walkVelocityPerSecond = maxWalkVelocityPerSecond;
+                        triggered = true;
+                    }
+                    if (collider.gameObject.CompareTag("Barrel"))
+                    {
+                        charState = characterState.onTheGround;
+                        canJump = true;
+                        triggered = true;
+                    }
+                }
     }
 }
