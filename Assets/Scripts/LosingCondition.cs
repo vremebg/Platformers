@@ -20,6 +20,12 @@ public class LosingCondition : MonoBehaviour {
     int healthTreshold;
 
     [SerializeField]
+    bool timeObjective;
+
+    [SerializeField]
+    int timeInSeconds;
+
+    [SerializeField]
     GameObject lossMenu;
 
     Health healthComponent;
@@ -42,6 +48,11 @@ public class LosingCondition : MonoBehaviour {
             }
         if (pointsObjective)
             if (pointsComponent.getPoints() <= pointsCount)
+            {
+                lossMenu.SetActive(true);
+            }
+        if (timeObjective)
+            if (Time.timeSinceLevelLoad >= timeInSeconds)
             {
                 lossMenu.SetActive(true);
             }

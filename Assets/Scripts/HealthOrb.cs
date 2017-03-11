@@ -40,7 +40,7 @@ public class HealthOrb : MonoBehaviour {
         orbSpriteRenderer.color = new Color(1, 1, 1, Mathf.Clamp((Time.time - startOfCooldown)/secondsBetweenHealthGive,0,1));
         if ((Time.time - startOfCooldown) < secondsBetweenHealthGive)
         {
-            angle += angleStepPerSecond * Time.deltaTime;
+            angle += angleStepPerSecond * Time.fixedDeltaTime;
             transform.position = new Vector2(initialTransformX + (maxDeviationX * Mathf.Cos(angle)),
                                             initialTransformY + (maxDeviationY * Mathf.Sin(angle)));
         }

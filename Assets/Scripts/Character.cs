@@ -55,7 +55,7 @@ public class Character : MonoBehaviour {
         }
         if (left)
         {
-            characterRigidBody.velocity = new Vector2(-walkVelocityPerSecond * Time.deltaTime, characterRigidBody.velocity.y);
+            characterRigidBody.velocity = new Vector2(-walkVelocityPerSecond * Time.fixedDeltaTime, characterRigidBody.velocity.y);
             if (charFacing == characterFacing.right)
             {
                 charFacing = characterFacing.left;
@@ -65,7 +65,7 @@ public class Character : MonoBehaviour {
         else
         if (right)
         {
-            characterRigidBody.velocity = new Vector2(walkVelocityPerSecond * Time.deltaTime, characterRigidBody.velocity.y);
+            characterRigidBody.velocity = new Vector2(walkVelocityPerSecond * Time.fixedDeltaTime, characterRigidBody.velocity.y);
             if (charFacing == characterFacing.left)
             {
                 charFacing = characterFacing.right;

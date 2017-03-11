@@ -13,6 +13,6 @@ public class TimeHUD : MonoBehaviour {
     }
 
 	void Update () {
-        textComp.text = ((int) Time.time).ToString();
+        textComp.text = ((int) Time.timeSinceLevelLoad).ToString();
 	}
 }
