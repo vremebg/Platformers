@@ -5,9 +5,9 @@ DONE - 1.HUD design and implementation - health, points,time
 DONE - 2.coins add to levels, count coins taken
 4."portal"?-next level
 DONE - 3.portal - move to another place - one-way and two-way
-5.Death event - animation, restart level
-6. level complete animation on screen ("Victory! points,time ....")
-7. Time counter on HUD
+DONE - 5.Death event - animation, restart level
+DONE - 6. level complete animation on screen ("Victory! points,time ....")
+DONE - 7. Time counter on HUD
 9. mainmenu, level select
 10. bigger barrel explosion effect
 11.boss level - big enemy and some small
