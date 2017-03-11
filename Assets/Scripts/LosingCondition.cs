@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LosingCondition : MonoBehaviour {
 
@@ -14,16 +15,25 @@ public class LosingCondition : MonoBehaviour {
     int pointsCount;
 
     [SerializeField]
+    string pointsStr = "Not enough points!";
+
+    [SerializeField]
     bool healthObjective;
 
     [SerializeField]
     int healthTreshold;
 
     [SerializeField]
+    string healthStr = "You died!";
+
+    [SerializeField]
     bool timeObjective;
 
     [SerializeField]
     int timeInSeconds;
+
+    [SerializeField]
+    string timeStr = "Time is up!";
 
     [SerializeField]
     GameObject lossMenu;
@@ -44,17 +54,23 @@ public class LosingCondition : MonoBehaviour {
         if (healthObjective)
             if (healthComponent.getHealth() <= healthTreshold)
             {
+                lossMenu.transform.parent.gameObject.SetActive(true);
                 lossMenu.SetActive(true);
+                lossMenu.GetComponentInChildren<Text>().text = healthStr;
             }
         if (pointsObjective)
             if (pointsComponent.getPoints() <= pointsCount)
             {
+                lossMenu.transform.parent.gameObject.SetActive(true);
                 lossMenu.SetActive(true);
+                lossMenu.GetComponentInChildren<Text>().text = pointsStr;
             }
         if (timeObjective)
             if (Time.timeSinceLevelLoad >= timeInSeconds)
             {
+                lossMenu.transform.parent.gameObject.SetActive(true);
                 lossMenu.SetActive(true);
+                lossMenu.GetComponentInChildren<Text>().text = timeStr;
             }
     }
 }
