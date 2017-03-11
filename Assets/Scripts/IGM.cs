@@ -18,8 +18,8 @@ public class IGM : MonoBehaviour {
     public void IGMResume()
     {
         Time.timeScale = 1;
-        gameObject.transform.parent.gameObject.SetActive(false);
-        gameObject.transform.parent.gameObject.transform.parent.gameObject.SetActive(false);
+        IGMenu.transform.parent.gameObject.SetActive(false);
+        IGMenu.SetActive(false);
     }
 
     public void IGMRestart()
