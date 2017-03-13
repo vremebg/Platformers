@@ -16,13 +16,7 @@ public class Character : MonoBehaviour {
     }
 
     [SerializeField]
-    float jumpVelocity = 5;
-
-    [SerializeField]
     float maxJumpAngle = 30;
-
-    [SerializeField]
-    float maxWalkVelocityPerSecond = 250;
 
     [SerializeField]
     Transform[] groundPoints;
@@ -30,6 +24,7 @@ public class Character : MonoBehaviour {
     float walkVelocityPerSecond;
     Rigidbody2D characterRigidBody;
     Animator characterAnimator;
+    VelocityController velocity;
 
     characterState charState;
     characterFacing charFacing = characterFacing.right;
@@ -45,6 +40,7 @@ public class Character : MonoBehaviour {
     void Start () {
         characterRigidBody = gameObject.GetComponent<Rigidbody2D>();
         characterAnimator = gameObject.GetComponent<Animator>();
+        velocity = gameObject.GetComponent<VelocityController>();
         lastFrameCharacterY = transform.position.y;
     }
 
@@ -53,7 +49,7 @@ public class Character : MonoBehaviour {
         Vector3 localScale = gameObject.transform.localScale;
         if (up && charState == characterState.onTheGround && canJump)
         {
-            characterRigidBody.velocity = new Vector2(characterRigidBody.velocity.x, jumpVelocity);
+            characterRigidBody.velocity = new Vector2(characterRigidBody.velocity.x, velocity.getJumpVelocity());
             charState = characterState.jumping;
         }
         if (left)
@@ -129,7 +125,7 @@ public class Character : MonoBehaviour {
             charState = characterState.falling;
         }
         if (charState != characterState.onTheGround)
-            walkVelocityPerSecond = maxWalkVelocityPerSecond;
+            walkVelocityPerSecond = velocity.getMaxWalkVelocityPerSecond();
         HandleMovement();
         ResetPhysicsValues();
     }
@@ -155,9 +151,9 @@ public class Character : MonoBehaviour {
                             canJump = true;
                         charState = characterState.onTheGround;
                         if (angle != 0 && transform.position.y >= lastFrameCharacterY)
-                            walkVelocityPerSecond = maxWalkVelocityPerSecond * (90 - angle) / 90;
+                            walkVelocityPerSecond = velocity.getMaxWalkVelocityPerSecond() * (90 - angle) / 90;
                         else
-                            walkVelocityPerSecond = maxWalkVelocityPerSecond;
+                            walkVelocityPerSecond = velocity.getMaxWalkVelocityPerSecond();
                         triggered = true;
                     }
                     if (collider.gameObject.CompareTag("Barrel"))
