@@ -35,6 +35,7 @@ public class Character : MonoBehaviour {
     bool triggered = false;
     bool canJump = false;
     float lastFrameCharacterY;
+    float deviationYToCountForProperOnPlatform = 0.05f; //the ground points should be in 0.05f distance from top of the platform collider
 
     // Use this for initialization
     void Start () {
@@ -139,11 +140,24 @@ public class Character : MonoBehaviour {
 
     private void CheckGroundPoints()
     {
-        if (characterRigidBody.velocity.y <=0)
-            foreach (Transform point in groundPoints)
-                foreach (Collider2D collider in Physics2D.OverlapPointAll(point.position))
+        foreach (Transform point in groundPoints)
+            foreach (Collider2D collider in Physics2D.OverlapPointAll(point.position))
+            {
+                if (collider.gameObject.CompareTag("Ground") && !collider.isTrigger)
                 {
-                    if ((collider.gameObject.CompareTag("Ground") || collider.gameObject.CompareTag("Platform")) && !collider.isTrigger)
+                    float angle = collider.gameObject.transform.rotation.eulerAngles.z;
+                    if (angle > 180) angle = 360 - angle;
+                    if (angle <= maxJumpAngle)
+                        canJump = true;
+                    charState = characterState.onTheGround;
+                    if (angle != 0 && transform.position.y >= lastFrameCharacterY)
+                        walkVelocityPerSecond = velocity.getMaxWalkVelocityPerSecond() * (90 - angle) / 90;
+                    else
+                        walkVelocityPerSecond = velocity.getMaxWalkVelocityPerSecond();
+                    triggered = true;
+                }
+                if (characterRigidBody.velocity.y <= 0)
+                    if (collider.gameObject.CompareTag("Platform") && !collider.isTrigger && point.position.y > collider.bounds.max.y - deviationYToCountForProperOnPlatform)
                     {
                         float angle = collider.gameObject.transform.rotation.eulerAngles.z;
                         if (angle > 180) angle = 360 - angle;
@@ -156,12 +170,22 @@ public class Character : MonoBehaviour {
                             walkVelocityPerSecond = velocity.getMaxWalkVelocityPerSecond();
                         triggered = true;
                     }
-                    if (collider.gameObject.CompareTag("Barrel"))
-                    {
-                        charState = characterState.onTheGround;
+                if (collider.gameObject.CompareTag("Barrel"))
+                {
+                    /*charState = characterState.onTheGround;
+                    canJump = true;
+                    triggered = true;*/
+                    float angle = collider.gameObject.transform.rotation.eulerAngles.z;
+                    if (angle > 180) angle = 360 - angle;
+                    if (angle <= maxJumpAngle)
                         canJump = true;
-                        triggered = true;
-                    }
+                    charState = characterState.onTheGround;
+                    if (angle != 0 && transform.position.y >= lastFrameCharacterY)
+                        walkVelocityPerSecond = velocity.getMaxWalkVelocityPerSecond() * (90 - angle) / 90;
+                    else
+                        walkVelocityPerSecond = velocity.getMaxWalkVelocityPerSecond();
+                    triggered = true;
                 }
+            }
     }
 }
