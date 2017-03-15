@@ -29,7 +29,7 @@ public class Character : MonoBehaviour {
     characterState charState;
     characterFacing charFacing = characterFacing.right;
 
-    bool up, left, right = false;
+    public bool up, left, right = false;
     bool isMoving = false;
     bool jumpedInThisFrame = false;
     bool triggered = false;
@@ -76,14 +76,6 @@ public class Character : MonoBehaviour {
         {
             characterRigidBody.velocity = new Vector2(0, characterRigidBody.velocity.y);
         }
-    }
-
-    void HandleInput()
-    {
-        up = left = right = false;
-        if (Input.GetKey(KeyCode.W)) up = true;
-        if (Input.GetKey(KeyCode.A)) left = true;
-        else if (Input.GetKey(KeyCode.D)) right = true;
     }
 
     void SetAnimations()
@@ -135,7 +127,6 @@ public class Character : MonoBehaviour {
     {
         SetAnimations();
         ResetBoolAnimValues();
-        HandleInput();
     }
 
     private void CheckGroundPoints()
