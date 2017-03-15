@@ -18,7 +18,7 @@ public class ActivateItems : MonoBehaviour {
     void Start()
     {
         x = checkSize.GetComponent<RectTransform>().rect.width * checkSize.GetComponent<RectTransform>().localScale.x;
-        y = checkSize.GetComponent<RectTransform>().rect.height * checkSize.GetComponent<RectTransform>().localScale.y + 2; //hack for tall objects activated and platformer beneath them not
+        y = checkSize.GetComponent<RectTransform>().rect.height * checkSize.GetComponent<RectTransform>().localScale.y;
     }
 
     void Update()

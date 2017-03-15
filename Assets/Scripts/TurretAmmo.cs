@@ -24,7 +24,7 @@ public class TurretAmmo : MonoBehaviour {
         tags = tagsForExploding.Split(',');
     }
 
-    private void OnTriggerEnter2D(Collider2D collider)
+    private void OnTriggerStay2D(Collider2D collider)
     {
         if (collider.gameObject.CompareTag("Character"))
             gameObject.GetComponent<DamageDealer>().applyDamageOnce(collider.gameObject);

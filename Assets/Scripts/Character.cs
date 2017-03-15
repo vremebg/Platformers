@@ -163,18 +163,9 @@ public class Character : MonoBehaviour {
                     }
                 if (collider.gameObject.CompareTag("Barrel"))
                 {
-                    /*charState = characterState.onTheGround;
-                    canJump = true;
-                    triggered = true;*/
-                    float angle = collider.gameObject.transform.rotation.eulerAngles.z;
-                    if (angle > 180) angle = 360 - angle;
-                    if (angle <= maxJumpAngle)
-                        canJump = true;
                     charState = characterState.onTheGround;
-                    if (angle != 0 && transform.position.y >= lastFrameCharacterY)
-                        walkVelocityPerSecond = velocity.getMaxWalkVelocityPerSecond() * (90 - angle) / 90;
-                    else
-                        walkVelocityPerSecond = velocity.getMaxWalkVelocityPerSecond();
+                    walkVelocityPerSecond = velocity.getMaxWalkVelocityPerSecond();
+                    canJump = true;
                     triggered = true;
                 }
             }
