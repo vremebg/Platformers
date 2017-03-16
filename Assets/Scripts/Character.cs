@@ -189,7 +189,8 @@ public class Character : MonoBehaviour {
                     canJump = true;
                     triggered = true;
                 }
-                if (collider.gameObject.CompareTag("MovingPlatform") && !triggered && characterRigidBody.velocity.y <= 0 && !onMovingPlatform)
+                if (collider.gameObject.CompareTag("MovingPlatform") && !triggered && characterRigidBody.velocity.y <= 0 
+                    && !onMovingPlatform && point.position.y > collider.bounds.max.y - deviationYToCountForProperOnPlatform)
                 {
                     onMovingPlatform = true;
                     float dx = collider.gameObject.GetComponentInParent<PathFollower>().dx;
