@@ -6,10 +6,13 @@ using UnityEngine.UI;
 public class VelocityController : MonoBehaviour {
 
     [SerializeField]
-    float jumpVelocity = 7;
+    float jumpVelocity = 380;
 
     [SerializeField]
-    float maxWalkVelocityPerSecond = 250;
+    float maxWalkVelocityPerSecond = 4.5f;
+
+    [SerializeField]
+    float xForce = 25;
 
     [SerializeField]
     float speedBoostXTimes = 2;
@@ -87,6 +90,11 @@ public class VelocityController : MonoBehaviour {
             return maxWalkVelocityPerSecond * speedBoostXTimes;
         else
             return maxWalkVelocityPerSecond;
+    }
+
+    public float getXForce()
+    {
+        return xForce;
     }
 
     public float getJumpVelocity()

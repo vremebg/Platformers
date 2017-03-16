@@ -22,6 +22,7 @@ public class Character : MonoBehaviour {
     Transform[] groundPoints;
 
     float walkVelocityPerSecond;
+    float xForce;
     Rigidbody2D characterRigidBody;
     Animator characterAnimator;
     VelocityController velocity;
@@ -36,6 +37,7 @@ public class Character : MonoBehaviour {
     bool canJump = false;
     float lastFrameCharacterY;
     float deviationYToCountForProperOnPlatform = 0.05f; //the ground points should be in 0.05f distance from top of the platform collider
+    bool onMovingPlatform = false;
 
     // Use this for initialization
     void Start () {
@@ -43,6 +45,7 @@ public class Character : MonoBehaviour {
         characterAnimator = gameObject.GetComponent<Animator>();
         velocity = gameObject.GetComponent<VelocityController>();
         lastFrameCharacterY = transform.position.y;
+        xForce = velocity.getXForce();
     }
 
     void HandleMovement()
@@ -50,12 +53,14 @@ public class Character : MonoBehaviour {
         Vector3 localScale = gameObject.transform.localScale;
         if (up && charState == characterState.onTheGround && canJump)
         {
-            characterRigidBody.velocity = new Vector2(characterRigidBody.velocity.x, velocity.getJumpVelocity());
+            characterRigidBody.velocity = new Vector2(characterRigidBody.velocity.x, 0);
+            characterRigidBody.AddForce(new Vector2(0, velocity.getJumpVelocity()));
             charState = characterState.jumping;
         }
         if (left)
         {
-            characterRigidBody.velocity = new Vector2(-walkVelocityPerSecond * Time.fixedDeltaTime, characterRigidBody.velocity.y);
+            if (characterRigidBody.velocity.x > -walkVelocityPerSecond)
+                characterRigidBody.AddForce(new Vector2(-xForce, 0));
             if (charFacing == characterFacing.right)
             {
                 charFacing = characterFacing.left;
@@ -65,7 +70,8 @@ public class Character : MonoBehaviour {
         else
         if (right)
         {
-            characterRigidBody.velocity = new Vector2(walkVelocityPerSecond * Time.fixedDeltaTime, characterRigidBody.velocity.y);
+            if (characterRigidBody.velocity.x < walkVelocityPerSecond)
+                characterRigidBody.AddForce(new Vector2(xForce, 0));
             if (charFacing == characterFacing.left)
             {
                 charFacing = characterFacing.right;
@@ -73,9 +79,7 @@ public class Character : MonoBehaviour {
             }
         }
         else
-        {
             characterRigidBody.velocity = new Vector2(0, characterRigidBody.velocity.y);
-        }
     }
 
     void SetAnimations()
@@ -131,6 +135,23 @@ public class Character : MonoBehaviour {
 
     private void CheckGroundPoints()
     {
+        onMovingPlatform = false;
+        foreach (Collider2D collider in Physics2D.OverlapCircleAll(groundPoints[1].position, 0.15f,LayerMask.GetMask("Platforms")))
+        {
+            if (collider.gameObject.CompareTag("MovingPlatform") && !triggered && characterRigidBody.velocity.y <= 0)
+            {
+                onMovingPlatform = true;
+                float dx = collider.gameObject.GetComponentInParent<PathFollower>().dx;
+                float dy = collider.gameObject.GetComponentInParent<PathFollower>().dy;
+                transform.Translate(new Vector2(dx, dy));
+
+                charState = characterState.onTheGround;
+                walkVelocityPerSecond = velocity.getMaxWalkVelocityPerSecond();
+                canJump = true;
+                triggered = true;
+            }
+        }
+
         foreach (Transform point in groundPoints)
             foreach (Collider2D collider in Physics2D.OverlapPointAll(point.position))
             {
@@ -163,6 +184,18 @@ public class Character : MonoBehaviour {
                     }
                 if (collider.gameObject.CompareTag("Barrel"))
                 {
+                    charState = characterState.onTheGround;
+                    walkVelocityPerSecond = velocity.getMaxWalkVelocityPerSecond();
+                    canJump = true;
+                    triggered = true;
+                }
+                if (collider.gameObject.CompareTag("MovingPlatform") && !triggered && characterRigidBody.velocity.y <= 0 && !onMovingPlatform)
+                {
+                    onMovingPlatform = true;
+                    float dx = collider.gameObject.GetComponentInParent<PathFollower>().dx;
+                    float dy = collider.gameObject.GetComponentInParent<PathFollower>().dy;
+                    transform.Translate(new Vector2(dx,dy));
+
                     charState = characterState.onTheGround;
                     walkVelocityPerSecond = velocity.getMaxWalkVelocityPerSecond();
                     canJump = true;

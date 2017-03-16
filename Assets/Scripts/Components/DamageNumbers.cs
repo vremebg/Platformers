@@ -59,6 +59,7 @@ public class DamageNumbers : MonoBehaviour {
                     int count = 0;
                     foreach (GameObject tempObj in temp.sprites)
                     {
+                        if (tempObj != null)
                         tempObj.transform.position = new Vector2(temp.initialX - count * spacingX  + (temp.deviationX * Mathf.Cos(temp.angle)),
                                 temp.initialY + (deviationY * Mathf.Sin(temp.angle)));
                         count++;
