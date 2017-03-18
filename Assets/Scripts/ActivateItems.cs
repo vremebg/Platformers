@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ActivateItems : MonoBehaviour {
+public class ActivateItems : MonoBehaviour
+{
 
     [SerializeField]
     GameObject rootObject;
@@ -23,7 +24,7 @@ public class ActivateItems : MonoBehaviour {
 
     void Update()
     {
-        foreach(Transform temp in rootObject.GetComponentsInChildren<Transform>(true))
+        foreach (Transform temp in rootObject.GetComponentsInChildren<Transform>(true))
         {
             if (!temp.gameObject.CompareTag("Character") && !temp.gameObject.CompareTag("Root")
                 && !temp.gameObject.CompareTag("Untagged") && !temp.gameObject.CompareTag("MainCamera"))
@@ -38,18 +39,26 @@ public class ActivateItems : MonoBehaviour {
                     objSizeX = 0;
                     objSizeY = 0;
                 }
-                if (temp.position.x + objSizeX + x > gameObject.transform.position.x
-                    && temp.position.x - objSizeX - x < gameObject.transform.position.x)
-                {
-                    if (temp.position.y + objSizeY + y > gameObject.transform.position.y
-                        && temp.position.y - objSizeY - y < gameObject.transform.position.y)
-                        temp.gameObject.SetActive(true);
-                    else
-                        temp.gameObject.SetActive(false);
-                }
+                if (temp.gameObject.GetComponent<Rigidbody2D>())
+                    Check(temp, 0, 0);
                 else
-                    temp.gameObject.SetActive(false);
+                    Check(temp, x / 4, y / 4);
             }
         }
+    }
+
+    void Check(Transform temp, float deviationX, float deviationY)
+    {
+        if (temp.position.x + objSizeX + x + deviationX > gameObject.transform.position.x
+        && temp.position.x - objSizeX - x - deviationX < gameObject.transform.position.x)
+        {
+            if (temp.position.y + objSizeY + y + deviationY > gameObject.transform.position.y
+                && temp.position.y - objSizeY - y - deviationY < gameObject.transform.position.y)
+                temp.gameObject.SetActive(true);
+            else
+                temp.gameObject.SetActive(false);
+        }
+        else
+            temp.gameObject.SetActive(false);
     }
 }
