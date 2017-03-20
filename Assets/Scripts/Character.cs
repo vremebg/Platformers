@@ -54,13 +54,13 @@ public class Character : MonoBehaviour {
         if (up && charState == characterState.onTheGround && canJump)
         {
             characterRigidBody.velocity = new Vector2(characterRigidBody.velocity.x, 0);
-            characterRigidBody.AddForce(new Vector2(0, velocity.getJumpVelocity()));
+            characterRigidBody.AddForce(new Vector2(0, velocity.getJumpVelocity()), ForceMode2D.Impulse);
             charState = characterState.jumping;
         }
         if (left)
         {
             if (characterRigidBody.velocity.x > -walkVelocityPerSecond)
-                characterRigidBody.AddForce(new Vector2(-xForce, 0));
+                characterRigidBody.AddForce(new Vector2(-xForce, 0), ForceMode2D.Impulse);
             if (charFacing == characterFacing.right)
             {
                 charFacing = characterFacing.left;
@@ -71,7 +71,7 @@ public class Character : MonoBehaviour {
         if (right)
         {
             if (characterRigidBody.velocity.x < walkVelocityPerSecond)
-                characterRigidBody.AddForce(new Vector2(xForce, 0));
+                characterRigidBody.AddForce(new Vector2(xForce, 0), ForceMode2D.Impulse);
             if (charFacing == characterFacing.left)
             {
                 charFacing = characterFacing.right;
@@ -79,7 +79,8 @@ public class Character : MonoBehaviour {
             }
         }
         else
-            characterRigidBody.velocity = new Vector2(0, characterRigidBody.velocity.y);
+            if (characterRigidBody.velocity.x > 0 || characterRigidBody.velocity.x < 0)
+                characterRigidBody.AddForce(new Vector2(-characterRigidBody.velocity.x, 0), ForceMode2D.Impulse);
     }
 
     void SetAnimations()
