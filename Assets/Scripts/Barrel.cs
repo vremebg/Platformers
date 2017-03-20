@@ -53,7 +53,7 @@ public class Barrel : MonoBehaviour {
                 else
                     walkVelocityPerSecond = velocity.getMaxWalkVelocityPerSecond();*/
                 if (Mathf.Abs(barrelRigidBody.velocity.x) >= speedXTreshold)
-                    barrelRigidBody.AddForce(new Vector2(-barrelRigidBody.velocity.x / speedDecreaseXtimes, 0),ForceMode2D.Impulse);
+                    barrelRigidBody.AddForce(new Vector2(-barrelRigidBody.velocity.x / speedDecreaseXtimes, 0),ForceMode2D.Force);
                 else
                     barrelRigidBody.velocity = new Vector2(0, barrelRigidBody.velocity.y);
             }
