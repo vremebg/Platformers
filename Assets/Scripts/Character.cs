@@ -27,6 +27,7 @@ public class Character : MonoBehaviour {
     private float walkVelocityPerSecond;
     private float xForce;
     private Rigidbody2D characterRigidBody;
+    private Collider2D charCollider;
     private Animator characterAnimator;
     private VelocityController velocity;
     private DamageDealer dmgDealer;
@@ -46,6 +47,7 @@ public class Character : MonoBehaviour {
     // Use this for initialization
     void Start () {
         characterRigidBody = gameObject.GetComponent<Rigidbody2D>();
+        charCollider = gameObject.GetComponent<Collider2D>();
         characterAnimator = gameObject.GetComponent<Animator>();
         velocity = gameObject.GetComponent<VelocityController>();
         lastFrameCharacterY = transform.position.y;
@@ -218,10 +220,10 @@ public class Character : MonoBehaviour {
 
     private void SteppingOnEnemies()
     {
-        foreach (Collider2D collider in Physics2D.OverlapBoxAll(groundPoints[0].position, new Vector2(groundPoints[2].position.x - groundPoints[0].position.x, -deviationYToCountForProperSteppingOnEnemies), LayerMask.GetMask(enemyLayers)))
+        foreach (Collider2D collider in Physics2D.OverlapBoxAll(new Vector2(charCollider.bounds.min.x, charCollider.bounds.min.y), new Vector2(charCollider.bounds.size.x, -deviationYToCountForProperSteppingOnEnemies), LayerMask.GetMask(enemyLayers)))
         {
             if (!hitTargets.Contains(collider.gameObject) && collider.gameObject.CompareTag("Enemy") && !collider.isTrigger && characterRigidBody.velocity.y < 0
-                && groundPoints[1].position.y > collider.bounds.max.y - deviationYToCountForProperSteppingOnEnemies)
+                && charCollider.bounds.min.y > collider.bounds.max.y - deviationYToCountForProperSteppingOnEnemies)
             {
                 hitTargets.Add(collider.gameObject);
                 dmgDealer.ApplyDamageOnce(collider.gameObject);
