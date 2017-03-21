@@ -5,16 +5,16 @@ using UnityEngine;
 public class HealthGiver : MonoBehaviour {
 
     [SerializeField]
-    int health;
+    private int health;
 
-    public void givehealthOnce(GameObject receiver)
+    public void GivehealthOnce(GameObject receiver)
     {
-        receiver.GetComponent<Health>().changeHealth(health);
+        receiver.GetComponent<Health>().ChangeHealth(health);
     }
 
-    public void givehealthOnce(string receiver)
+    public void GivehealthOnce(string receiver)
     {
-        GameObject.Find(receiver).GetComponent<Health>().changeHealth(health);
+        GameObject.Find(receiver).GetComponent<Health>().ChangeHealth(health);
     }
 
     public bool isHealthMaxed(GameObject receiver)

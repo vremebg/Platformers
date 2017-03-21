@@ -5,27 +5,27 @@ using UnityEngine;
 public class HealthOrb : MonoBehaviour {
 
     [SerializeField]
-    bool desroyOnContact = false;
+    private bool desroyOnContact = false;
 
     [SerializeField]
-    int secondsBetweenHealthGive = 5;
+    private int secondsBetweenHealthGive = 5;
 
     [SerializeField]
-    float maxDeviationY = 0.4f;
+    private float maxDeviationY = 0.4f;
 
     [SerializeField]
-    float maxDeviationX = 0.1f;
+    private float maxDeviationX = 0.1f;
 
     [SerializeField]
-    float angleStepPerSecond = 5f;
+    private float angleStepPerSecond = 5f;
 
 
-    SpriteRenderer orbSpriteRenderer;
+    private SpriteRenderer orbSpriteRenderer;
 
-    float startOfCooldown;
-    float initialTransformY;
-    float initialTransformX;
-    float angle = 0;
+    private float startOfCooldown;
+    private float initialTransformY;
+    private float initialTransformX;
+    private float angle = 0;
 
     void Start()
     {
@@ -57,7 +57,7 @@ public class HealthOrb : MonoBehaviour {
         {
             if (!gameObject.GetComponent<HealthGiver>().isHealthMaxed(collider.gameObject))
             {
-                gameObject.GetComponent<HealthGiver>().givehealthOnce(collider.gameObject);
+                gameObject.GetComponent<HealthGiver>().GivehealthOnce(collider.gameObject);
                 startOfCooldown = Time.time;
                 if (desroyOnContact) DestroyObject(gameObject);
             }

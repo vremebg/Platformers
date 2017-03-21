@@ -5,30 +5,30 @@ using UnityEngine;
 public class Patroller : MonoBehaviour {
 
     [SerializeField]
-    bool onPlatform;
+    private bool onPlatform;
 
     [SerializeField]
-    bool betweenPoints;
+    private bool betweenPoints;
 
     [SerializeField]
-    GameObject platform;
+    private GameObject platform;
 
     [SerializeField]
-    Transform leftPoint;
+    private Transform leftPoint;
 
     [SerializeField]
-    Transform rightPoint;
+    private Transform rightPoint;
 
-    Rigidbody2D thisRigidBody;
-    Collider2D thisCollider;
+    private Rigidbody2D thisRigidBody;
+    private Collider2D thisCollider;
 
-    float maxX;
-    float minX;
+    private float maxX;
+    private float minX;
 
-    float patrollerMinX;
-    float patrollerMaxX;
-    bool leftHit = false;
-    bool rightHit = false;
+    private float patrollerMinX;
+    private float patrollerMaxX;
+    private bool leftHit = false;
+    private bool rightHit = false;
 
 	// Use this for initialization
 	void Start () {
@@ -57,7 +57,7 @@ public class Patroller : MonoBehaviour {
             Calculations();
     }
 
-    public void Calculations()
+    private void Calculations()
     {
         patrollerMinX = thisCollider.bounds.min.x + thisRigidBody.velocity.x * Time.fixedDeltaTime;
         patrollerMaxX = thisCollider.bounds.max.x + thisRigidBody.velocity.x * Time.fixedDeltaTime;

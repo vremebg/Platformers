@@ -15,25 +15,25 @@ public class DamageNumbers : MonoBehaviour {
     }
 
     [SerializeField]
-    float deviationXMax = 0.2f;
+    private float deviationXMax = 0.2f;
 
     [SerializeField]
-    float deviationY = 0.3f;
+    private float deviationY = 0.3f;
 
     [SerializeField]
-    float speedInSeconds = 5f;
+    private float speedInSeconds = 5f;
 
     [SerializeField]
-    float spacingX = 0.4f;
+    private float spacingX = 0.4f;
 
     [SerializeField]
-    GameObject gameObj;
+    private GameObject gameObj;
 
     [SerializeField]
-    float lifetimeSeconds = 0.5f;
+    private float lifetimeSeconds = 0.5f;
 
-    List<numToShow> nums = new List<numToShow>();
-    List<numToShow> itemsToRemove = new List<numToShow>();
+    private List<numToShow> nums = new List<numToShow>();
+    private List<numToShow> itemsToRemove = new List<numToShow>();
 
     // Use this for initialization
     void Start () {
@@ -77,7 +77,7 @@ public class DamageNumbers : MonoBehaviour {
         }
 	}
 
-    public void addNumberToDisplay(int number)
+    public void AddNumberToDisplay(int number)
     {
         bool negative = (number < 0);
         if (number == 0) number = 1;
@@ -110,16 +110,5 @@ public class DamageNumbers : MonoBehaviour {
             count++;
         }
         nums.Add(temp);
-    }
-
-    public void destroyAll()
-    {
-        foreach (numToShow temp in nums)
-        {
-            foreach (GameObject tempObj in temp.sprites)
-            {
-                Destroy(tempObj);
-            }
-        }
     }
 }

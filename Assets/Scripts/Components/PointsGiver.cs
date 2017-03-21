@@ -5,16 +5,16 @@ using UnityEngine;
 public class PointsGiver : MonoBehaviour {
 
     [SerializeField]
-    int points;
+    private int points;
 
-    public void givePointsOnce(GameObject receiver)
+    public void GivePointsOnce(GameObject receiver)
     {
-        receiver.GetComponent<Points>().changePoints(points);
+        receiver.GetComponent<Points>().ChangePoints(points);
     }
 
-    public void givePointsOnce(string receiver)
+    public void GivePointsOnce(string receiver)
     {
-        GameObject.Find(receiver).GetComponent<Points>().changePoints(points);
+        GameObject.Find(receiver).GetComponent<Points>().ChangePoints(points);
     }
 
     public bool isPointsPoweredUp(GameObject receiver)

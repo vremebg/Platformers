@@ -5,25 +5,25 @@ using UnityEngine;
 public class PathFollower : MonoBehaviour {
 
     [SerializeField]
-    float speedAroundThePathPerSecond = 1.5f;
+    private float speedAroundThePathPerSecond = 1.5f;
 
     [SerializeField]
-    public GameObject platform;
+    private GameObject platform;
 
     [SerializeField]
-    GameObject[] points;
+    private GameObject[] points;
 
-    int currentPoint = 0;
-    int nextPoint = 1;
+    private int currentPoint = 0;
+    private int nextPoint = 1;
 
     public float dx = 0;
     public float dy = 0;
 
-    float x;
-    float y;
-    float predictedX;
-    float predictedY;
-    float timedSpeedAroundThePath;
+    private float x;
+    private float y;
+    private float predictedX;
+    private float predictedY;
+    private float timedSpeedAroundThePath;
 
     // Use this for initialization
     void Start () {
@@ -38,7 +38,7 @@ public class PathFollower : MonoBehaviour {
             points[nextPoint].transform.position.y - y);
     }
 
-    private void calcCurrentAndNextPoint()
+    private void CalcCurrentAndNextPoint()
     {
         currentPoint++;
         if (currentPoint >= points.Length)
@@ -48,7 +48,7 @@ public class PathFollower : MonoBehaviour {
             nextPoint = 0;
     }
 
-    private void calcPredictedXY()
+    private void CalcPredictedXY()
     {
         predictedX = x;
         predictedY = y;
@@ -73,25 +73,25 @@ public class PathFollower : MonoBehaviour {
                 predictedX = x - timedSpeedAroundThePath;
 
         if (hypotenuse == 0 && temp.x != 0 && temp.y != 0)
-            calcCurrentAndNextPoint();
+            CalcCurrentAndNextPoint();
         else
         {
             if (temp.x > 0 && predictedX > points[nextPoint].transform.position.x)
-                predictToNextPointAndCalculate();
+                PredictToNextPointAndCalculate();
             if (temp.x < 0 && predictedX < points[nextPoint].transform.position.x)
-                predictToNextPointAndCalculate();
+                PredictToNextPointAndCalculate();
             if (temp.x == 0)
             {
                 if (temp.y > 0 && predictedY > points[nextPoint].transform.position.y)
-                    predictToNextPointAndCalculate();
+                    PredictToNextPointAndCalculate();
                 if (temp.y < 0 && predictedY < points[nextPoint].transform.position.y)
-                    predictToNextPointAndCalculate();
+                    PredictToNextPointAndCalculate();
             }
         }
 
         if (temp.x == 0 && temp.y == 0)
         {
-            calcCurrentAndNextPoint();
+            CalcCurrentAndNextPoint();
         }
 
         x = predictedX;
@@ -102,17 +102,17 @@ public class PathFollower : MonoBehaviour {
         platform.transform.position = new Vector2(x, y);
     }
 
-    private void predictToNextPointAndCalculate()
+    private void PredictToNextPointAndCalculate()
     {
         predictedX = points[nextPoint].transform.position.x;
         predictedY = points[nextPoint].transform.position.y;
-        calcCurrentAndNextPoint();
+        CalcCurrentAndNextPoint();
     }
 	
 	// Update is called once per frame
 	void FixedUpdate () {
         timedSpeedAroundThePath = speedAroundThePathPerSecond * Time.fixedDeltaTime;
         if (points.Length >= 2)
-            calcPredictedXY();
+            CalcPredictedXY();
     }
 }

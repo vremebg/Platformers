@@ -6,40 +6,40 @@ using UnityEngine.UI;
 public class WinningConditions : MonoBehaviour {
 
     [SerializeField]
-    GameObject character;
+    private GameObject character;
 
     [SerializeField]
-    bool pointsObjective;
+    private bool pointsObjective;
 
     [SerializeField]
-    int pointsCount;
+    private int pointsCount;
 
     [SerializeField]
-    string pointsStr = "Congrats! You collected enough points!";
+    private string pointsStr = "Congrats! You collected enough points!";
 
     [SerializeField]
-    bool healthObjective;
+    private bool healthObjective;
 
     [SerializeField]
-    int healthTreshold;
+    private int healthTreshold;
 
     [SerializeField]
-    string healthStr = "Congrats! You are invincible!";
+    private string healthStr = "Congrats! You are invincible!";
 
     [SerializeField]
-    bool timeObjective;
+    private bool timeObjective;
 
     [SerializeField]
-    int timeInSeconds;
+    private int timeInSeconds;
 
     [SerializeField]
-    string timeStr = "Victory! Time is up!";
+    private string timeStr = "Victory! Time is up!";
 
     [SerializeField]
-    GameObject victoryMenu;
+    private GameObject victoryMenu;
 
-    Health healthComponent;
-    Points pointsComponent;
+    private Health healthComponent;
+    private Points pointsComponent;
 
     // Use this for initialization
     void Start()

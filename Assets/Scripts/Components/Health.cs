@@ -32,6 +32,15 @@ public class Health : MonoBehaviour {
     [SerializeField]
     private float invincibilityInSeconds;
 
+    [SerializeField]
+    private float invincibilityTresholdDamage = 20;
+
+    [SerializeField]
+    private bool destroyOnHealthDepleted = false;
+
+    [SerializeField]
+    private GameObject deathPrefab;
+
     private bool isInvincible = false;
     private float invicStartTime;
     private SpriteRenderer objSpriteRenderer;
@@ -53,7 +62,7 @@ public class Health : MonoBehaviour {
             {
                 isInvincible = false;
                 alpha = 255;
-                objSpriteRenderer.color = new Color(255, 255, 255, alpha);
+                objSpriteRenderer.color = new Color(1, 1, 1, alpha);
             }
             else
             {
@@ -64,11 +73,11 @@ public class Health : MonoBehaviour {
                     alphaStep = 0.05f;
                 }else
                     if (alpha > 1)
-                {
-                    alpha = 1;
-                    alphaStep = -0.05f;
-                }
-                objSpriteRenderer.color = new Color(255, 255, 255, alpha);
+                    {
+                        alpha = 1;
+                        alphaStep = -0.05f;
+                    }
+                objSpriteRenderer.color = new Color(1, 1, 1, alpha);
             }
         }
     }
@@ -78,43 +87,46 @@ public class Health : MonoBehaviour {
         return health;
     }
 
-    public void changeHealth(float change)
+    public void ChangeHealth(float change)
     {
         if (!hasInvincibilityAfterHit)
-        {
-            health += change;
-            if (health > maxHealth)
-                health = maxHealth;
-            if (health < 0)
-                health = 0;
-            if (isOnHud)
-                hudComponent.GetComponent<Text>().text = ((int)health).ToString();
-
-            if (showDamageNumbersOnChange)
-                gameObject.GetComponent<DamageNumbers>().addNumberToDisplay((int)change);
-            if (showHealth)
-                healthSpriteObj.transform.localScale = new Vector2(health / maxHealth, healthSpriteObj.transform.localScale.y);
-        }
+            InnerChangeHealth(change);
         else
         {
-            if (!isInvincible)
+            if (!isInvincible || change > 0)
             {
-                isInvincible = true;
-                invicStartTime = Time.time;
-                health += change;
-                if (health > maxHealth)
-                    health = maxHealth;
-                if (health < 0)
-                    health = 0;
-                if (isOnHud)
-                    hudComponent.GetComponent<Text>().text = ((int)health).ToString();
-
-                if (showDamageNumbersOnChange)
-                    gameObject.GetComponent<DamageNumbers>().addNumberToDisplay((int)change);
-                if (showHealth)
-                    healthSpriteObj.transform.localScale = new Vector2(health / maxHealth, healthSpriteObj.transform.localScale.y);
+                if (change < -invincibilityTresholdDamage)
+                {
+                    isInvincible = true;
+                    invicStartTime = Time.time;
+                }
+                InnerChangeHealth(change);
             }
         }
+    }
+
+    private void InnerChangeHealth(float change)
+    {
+        health += change;
+        if (health > maxHealth)
+            health = maxHealth;
+        if (health <= 0)
+        {
+            health = 0;
+            if (destroyOnHealthDepleted)
+            {
+                if (deathPrefab != null)
+                    Instantiate(deathPrefab, gameObject.transform.position, Quaternion.Euler(0, 0, 0));
+                DestroyObject(gameObject);
+            }
+        }
+        if (isOnHud)
+            hudComponent.GetComponent<Text>().text = ((int)health).ToString();
+
+        if (showDamageNumbersOnChange)
+            gameObject.GetComponent<DamageNumbers>().AddNumberToDisplay((int)change);
+        if (showHealth)
+            healthSpriteObj.transform.localScale = new Vector2(health / maxHealth, healthSpriteObj.transform.localScale.y);
     }
 
     public bool healthDepleted()

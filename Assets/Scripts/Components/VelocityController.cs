@@ -6,78 +6,78 @@ using UnityEngine.UI;
 public class VelocityController : MonoBehaviour {
 
     [SerializeField]
-    float jumpVelocity = 380;
+    private float jumpVelocity = 380;
 
     [SerializeField]
-    float maxWalkVelocityPerSecond = 4.5f;
+    private float maxWalkVelocityPerSecond = 4.5f;
 
     [SerializeField]
-    float xForce = 25;
+    private float xForce = 25;
 
     [SerializeField]
-    float speedBoostXTimes = 2;
+    private float speedBoostXTimes = 2;
 
     [SerializeField]
-    int speedBoostSeconds = 10;
+    private int speedBoostSeconds = 10;
 
     [SerializeField]
-    float JumpBoostXTimes = 1.5f;
+    private float JumpBoostXTimes = 1.5f;
 
     [SerializeField]
-    int jumpBoostSeconds = 10;
+    private int jumpBoostSeconds = 10;
 
     [SerializeField]
-    GameObject hudBoostSpeedTime;
+    private GameObject hudBoostSpeedTime;
 
     [SerializeField]
-    GameObject hudBoostSpeedIcon;
+    private GameObject hudBoostSpeedIcon;
 
 
     [SerializeField]
-    GameObject hudBoostJumpTime;
+    private GameObject hudBoostJumpTime;
 
     [SerializeField]
-    GameObject hudBoostJumpIcon;
+    private GameObject hudBoostJumpIcon;
 
 
-    bool speedBoost = false;
-    bool jumpBoost = false;
+    private bool speedBoost = false;
+    private bool jumpBoost = false;
 
-    float startTimeJump;
-    float startTimeSpeed;
+    private float startTimeJump;
+    private float startTimeSpeed;
 
     void Update()
     {
         if (speedBoost)
             if (Time.time - startTimeSpeed > speedBoostSeconds)
-                stopSpeedBoost();
+                StopSpeedBoost();
             else
-                showHudSpeed();
+                ShowHudSpeed();
         if (jumpBoost)
             if (Time.time - startTimeJump > jumpBoostSeconds)
-                stopJumpBoost();
+                StopJumpBoost();
             else
-                showHudJump();
+                ShowHudJump();
     }
 
-    void showHudJump()
+    private void ShowHudJump()
     {
         hudBoostJumpTime.GetComponent<Text>().text = ((int)(jumpBoostSeconds - (Time.time - startTimeJump))).ToString();
     }
 
-    void showHudSpeed()
+    private void ShowHudSpeed()
     {
         hudBoostSpeedTime.GetComponent<Text>().text = ((int)(speedBoostSeconds - (Time.time - startTimeSpeed))).ToString();
     }
 
-    void stopJumpBoost()
+    private void StopJumpBoost()
     {
         jumpBoost = false;
         hudBoostJumpIcon.SetActive(false);
         hudBoostJumpTime.SetActive(false);
     }
 
-    void stopSpeedBoost()
+    private void StopSpeedBoost()
     {
         speedBoost = false;
         hudBoostSpeedIcon.SetActive(false);
@@ -105,7 +105,7 @@ public class VelocityController : MonoBehaviour {
             return jumpVelocity;
     }
 
-    public void giveSpeedBoost()
+    public void GiveSpeedBoost()
     {
         startTimeSpeed = Time.time;
         speedBoost = true;
@@ -113,7 +113,7 @@ public class VelocityController : MonoBehaviour {
         hudBoostSpeedTime.SetActive(true);
     }
 
-    public void giveJumpBoost()
+    public void GiveJumpBoost()
     {
         startTimeJump = Time.time;
         jumpBoost = true;

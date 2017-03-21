@@ -4,24 +4,24 @@ using UnityEngine;
 
 public class BoostGiver : MonoBehaviour {
 
-    public void giveSpeedBoost(GameObject receiver)
+    public void GiveSpeedBoost(GameObject receiver)
     {
-        receiver.GetComponent<VelocityController>().giveSpeedBoost();
+        receiver.GetComponent<VelocityController>().GiveSpeedBoost();
     }
 
-    public void giveSpeedBoost(string receiver)
+    public void GiveSpeedBoost(string receiver)
     {
-        GameObject.Find(receiver).GetComponent<VelocityController>().giveSpeedBoost();
+        GameObject.Find(receiver).GetComponent<VelocityController>().GiveSpeedBoost();
     }
 
-    public void giveJumpBoost(GameObject receiver)
+    public void GiveJumpBoost(GameObject receiver)
     {
-        receiver.GetComponent<VelocityController>().giveJumpBoost();
+        receiver.GetComponent<VelocityController>().GiveJumpBoost();
     }
 
-    public void giveJumpBoost(string receiver)
+    public void GiveJumpBoost(string receiver)
     {
-        GameObject.Find(receiver).GetComponent<VelocityController>().giveJumpBoost();
+        GameObject.Find(receiver).GetComponent<VelocityController>().GiveJumpBoost();
     }
 
     public bool hasSpeedBoost(GameObject receiver)

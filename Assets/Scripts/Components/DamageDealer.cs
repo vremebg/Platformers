@@ -5,25 +5,25 @@ using UnityEngine;
 public class DamageDealer : MonoBehaviour {
 
     [SerializeField]
-    float damage;
+    private float damage;
 
-    public void applyDamageOnce(GameObject receiver)
+    public void ApplyDamageOnce(GameObject receiver)
     {
-        receiver.GetComponent<Health>().changeHealth(-damage);
+        receiver.GetComponent<Health>().ChangeHealth(-damage);
     }
 
-    public void applyDamageOnce(string receiver)
+    public void ApplyDamageOnce(string receiver)
     {
-        GameObject.Find(receiver).GetComponent<Health>().changeHealth(-damage);
+        GameObject.Find(receiver).GetComponent<Health>().ChangeHealth(-damage);
     }
 
-    public void applyDamageOnce(GameObject receiver, float damage)
+    public void ApplyDamageOnce(GameObject receiver, float damage)
     {
-        receiver.GetComponent<Health>().changeHealth(-damage);
+        receiver.GetComponent<Health>().ChangeHealth(-damage);
     }
 
-    public void applyDamageOnce(string receiver, float damage)
+    public void ApplyDamageOnce(string receiver, float damage)
     {
-        GameObject.Find(receiver).GetComponent<Health>().changeHealth(-damage);
+        GameObject.Find(receiver).GetComponent<Health>().ChangeHealth(-damage);
     }
 }

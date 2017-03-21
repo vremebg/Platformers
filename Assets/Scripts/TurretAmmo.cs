@@ -5,18 +5,18 @@ using UnityEngine;
 public class TurretAmmo : MonoBehaviour {
 
     [SerializeField]
-    GameObject ammoExplosion;
+    private GameObject ammoExplosion;
 
     [SerializeField]
-    string tagsForExploding;
+    private string tagsForExploding;
 
     [SerializeField]
-    float speed = 3;
+    private float speed = 3;
 
     [SerializeField]
-    float lifetimeInSeconds = 2;
+    private float lifetimeInSeconds = 2;
 
-    string[] tags;
+    private string[] tags;
 
     void Start()
     {
@@ -27,7 +27,7 @@ public class TurretAmmo : MonoBehaviour {
     private void OnTriggerStay2D(Collider2D collider)
     {
         if (collider.gameObject.CompareTag("Character"))
-            gameObject.GetComponent<DamageDealer>().applyDamageOnce(collider.gameObject);
+            gameObject.GetComponent<DamageDealer>().ApplyDamageOnce(collider.gameObject);
         if (tags != null && tags.Length != 0)
             foreach (string tag in tags)
                 if (collider.gameObject.CompareTag(tag))

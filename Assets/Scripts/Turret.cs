@@ -5,33 +5,33 @@ using UnityEngine;
 public class Turret : MonoBehaviour {
 
     [SerializeField]
-    float range = 7;
+    private float range = 7;
 
     [SerializeField]
-    float secondsBetweenShots = 0.8f;
+    private float secondsBetweenShots = 0.8f;
 
     [SerializeField]
-    string targetTags;
+    private string targetTags;
 
     [SerializeField]
-    Transform ammo;
+    private Transform ammo;
 
     [SerializeField]
-    Transform shootingPoint;
+    private Transform shootingPoint;
 
     [SerializeField]
-    Transform cannon;
+    private Transform cannon;
 
     //when too close
     [SerializeField]
-    float disableRange = 2;
+    private float disableRange = 2;
 
-    Animator turretAnimator;
+    private Animator turretAnimator;
 
-    string[] tags;
+    private string[] tags;
 
-    float timeCounter = 0;
-    bool shootTrigger;
+    private float timeCounter = 0;
+    private bool shootTrigger;
 
     void Start()
     {

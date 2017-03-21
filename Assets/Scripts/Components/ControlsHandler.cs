@@ -5,55 +5,61 @@ using UnityEngine;
 public class ControlsHandler : MonoBehaviour {
 
     [SerializeField]
-    GameObject character;
+    private GameObject character;
 
     [SerializeField]
-    GameObject controls;
+    private GameObject controls;
 
     Character charScript;
-    KeyboardControls keyboard;
+    private KeyboardControls keyboard;
 
 	// Use this for initialization
 	void Start () {
         charScript = character.GetComponent<Character>();
         keyboard = controls.GetComponent<KeyboardControls>();
 	}
-	
-    public void setLeft()
+
+    public void SetLeft()
     {
         charScript.right = false;
         charScript.left = true;
-        keyboard.interactionX = true;
+        if (keyboard != null)
+            keyboard.interactionX = true;
     }
 
-    public void setRight()
+    public void SetRight()
     {
         charScript.right = true;
         charScript.left = false;
-        keyboard.interactionX = true;
+        if (keyboard != null)
+            keyboard.interactionX = true;
     }
 
-    public void resetLeft()
+    public void ResetLeft()
     {
         charScript.left = false;
-        keyboard.interactionX = false;
+        if (keyboard != null)
+            keyboard.interactionX = false;
     }
 
-    public void resetRight()
+    public void ResetRight()
     {
         charScript.right = false;
-        keyboard.interactionX = false;
+        if (keyboard != null)
+            keyboard.interactionX = false;
     }
 
-    public void setUp()
+    public void SetUp()
     {
         charScript.up = true;
-        keyboard.interactionUp = true;
+        if (keyboard != null)
+            keyboard.interactionUp = true;
     }
 
-    public void resetUp()
+    public void ResetUp()
     {
         charScript.up = false;
-        keyboard.interactionUp = false;
+        if (keyboard != null)
+            keyboard.interactionUp = false;
     }
 }

@@ -6,23 +6,23 @@ using UnityEngine.SceneManagement;
 public class IGM : MonoBehaviour {
 
     [SerializeField]
-    GameObject IGMenu;
+    private GameObject IGMenu;
 
-    public void IGMPopUp()
+    private void IGMPopUp()
     {
         IGMenu.transform.parent.gameObject.SetActive(true);
         IGMenu.SetActive(true);
         Time.timeScale = 0;
     }
 
-    public void IGMResume()
+    private void IGMResume()
     {
         Time.timeScale = 1;
         IGMenu.transform.parent.gameObject.SetActive(false);
         IGMenu.SetActive(false);
     }
 
-    public void IGMRestart()
+    private void IGMRestart()
     {
         foreach (GameObject temp in SceneManager.GetActiveScene().GetRootGameObjects())
             temp.SetActive(false);
@@ -30,7 +30,7 @@ public class IGM : MonoBehaviour {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    public void IGMQuit()
+    private void IGMQuit()
     {
         Application.Quit();
     }

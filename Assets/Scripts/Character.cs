@@ -5,39 +5,43 @@ using UnityEngine.UI;
 
 public class Character : MonoBehaviour {
 
-    public enum characterState
+    private enum characterState
     {
         jumping=0, falling, onTheGround
     }
 
-    public enum characterFacing
+    private enum characterFacing
     {
         right=0, left
     }
 
     [SerializeField]
-    float maxJumpAngle = 30;
+    private float maxJumpAngle = 30;
 
     [SerializeField]
-    Transform[] groundPoints;
+    private Transform[] groundPoints;
 
-    float walkVelocityPerSecond;
-    float xForce;
-    Rigidbody2D characterRigidBody;
-    Animator characterAnimator;
-    VelocityController velocity;
-
-    characterState charState;
-    characterFacing charFacing = characterFacing.right;
+    private string[] groundLayers = new string[] { "Platforms", "Barrels", "Ground" };
+    private string[] enemyLayers = new string[] { "Dummy Robot" };
+    private List<GameObject> hitTargets = new List<GameObject>();
+    private float walkVelocityPerSecond;
+    private float xForce;
+    private Rigidbody2D characterRigidBody;
+    private Animator characterAnimator;
+    private VelocityController velocity;
+    private DamageDealer dmgDealer;
+    private characterState charState;
+    private characterFacing charFacing = characterFacing.right;
+    private bool isMoving = false;
+    private bool jumpedInThisFrame = false;
+    private bool triggered = false;
+    private bool canJump = false;
+    private float lastFrameCharacterY;
+    private float deviationYToCountForProperOnPlatform = 0.05f; //the ground points should be in 0.05f distance from top of the platform collider
+    private float deviationYToCountForProperSteppingOnEnemies = 0.2f;
+    private bool onMovingPlatform = false;
 
     public bool up, left, right = false;
-    bool isMoving = false;
-    bool jumpedInThisFrame = false;
-    bool triggered = false;
-    bool canJump = false;
-    float lastFrameCharacterY;
-    float deviationYToCountForProperOnPlatform = 0.05f; //the ground points should be in 0.05f distance from top of the platform collider
-    bool onMovingPlatform = false;
 
     // Use this for initialization
     void Start () {
@@ -46,9 +50,10 @@ public class Character : MonoBehaviour {
         velocity = gameObject.GetComponent<VelocityController>();
         lastFrameCharacterY = transform.position.y;
         xForce = velocity.getXForce();
+        dmgDealer = gameObject.GetComponent<DamageDealer>();
     }
 
-    void HandleMovement()
+    private void HandleMovement()
     {
         Vector3 localScale = gameObject.transform.localScale;
         if (up && charState == characterState.onTheGround && canJump)
@@ -83,7 +88,7 @@ public class Character : MonoBehaviour {
                 characterRigidBody.AddForce(new Vector2(-characterRigidBody.velocity.x, 0), ForceMode2D.Impulse);
     }
 
-    void SetAnimations()
+    private void SetAnimations()
     {
         if (up && charState == characterState.onTheGround && canJump)
             jumpedInThisFrame = true;
@@ -96,20 +101,20 @@ public class Character : MonoBehaviour {
         characterAnimator.SetBool("Falling", (charState == characterState.falling));
     }
 
-    void ResetBoolAnimValues()
+    private void ResetBoolAnimValues()
     {
         isMoving = false;
         jumpedInThisFrame = false;
     }
 
-    void ResetPhysicsValues()
+    private void ResetPhysicsValues()
     {
         triggered = false;
         canJump = false;
         lastFrameCharacterY = transform.position.y;
     }
 
-    void ChangeScaleFacing(Vector3 localScale)
+    private void ChangeScaleFacing(Vector3 localScale)
     {
         localScale.x *= -1;
         gameObject.transform.localScale = localScale;
@@ -118,12 +123,15 @@ public class Character : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
         CheckGroundPoints();
+        SteppingOnEnemies();
         if (characterRigidBody.velocity.y < 0 && !triggered && charState != characterState.onTheGround)
         {
             charState = characterState.falling;
         }
         if (charState != characterState.onTheGround)
             walkVelocityPerSecond = velocity.getMaxWalkVelocityPerSecond();
+        else
+            hitTargets.Clear();
         HandleMovement();
         ResetPhysicsValues();
     }
@@ -137,9 +145,11 @@ public class Character : MonoBehaviour {
     private void CheckGroundPoints()
     {
         onMovingPlatform = false;
-        foreach (Collider2D collider in Physics2D.OverlapCircleAll(groundPoints[1].position, 0.15f,LayerMask.GetMask("Platforms")))
+        //this is a fix for the moving platform moving downwards because character looses connection with it
+        foreach (Collider2D collider in Physics2D.OverlapBoxAll(groundPoints[1].position, new Vector2(0, 0.15f),LayerMask.GetMask("Platforms")))
         {
-            if (collider.gameObject.CompareTag("MovingPlatform") && !triggered && characterRigidBody.velocity.y <= 0)
+            if (collider.gameObject.CompareTag("MovingPlatform") && !triggered && characterRigidBody.velocity.y <= 0
+                && groundPoints[1].position.y > collider.bounds.max.y)
             {
                 onMovingPlatform = true;
                 float dx = collider.gameObject.GetComponentInParent<PathFollower>().dx;
@@ -154,7 +164,7 @@ public class Character : MonoBehaviour {
         }
 
         foreach (Transform point in groundPoints)
-            foreach (Collider2D collider in Physics2D.OverlapPointAll(point.position))
+            foreach (Collider2D collider in Physics2D.OverlapPointAll(point.position, LayerMask.GetMask(groundLayers)))
             {
                 if (collider.gameObject.CompareTag("Ground") && !collider.isTrigger)
                 {
@@ -204,5 +214,18 @@ public class Character : MonoBehaviour {
                     triggered = true;
                 }
             }
+    }
+
+    private void SteppingOnEnemies()
+    {
+        foreach (Collider2D collider in Physics2D.OverlapBoxAll(groundPoints[0].position, new Vector2(groundPoints[2].position.x - groundPoints[0].position.x, -deviationYToCountForProperSteppingOnEnemies), LayerMask.GetMask(enemyLayers)))
+        {
+            if (!hitTargets.Contains(collider.gameObject) && collider.gameObject.CompareTag("Enemy") && !collider.isTrigger && characterRigidBody.velocity.y < 0
+                && groundPoints[1].position.y > collider.bounds.max.y - deviationYToCountForProperSteppingOnEnemies)
+            {
+                hitTargets.Add(collider.gameObject);
+                dmgDealer.ApplyDamageOnce(collider.gameObject);
+            }
+        }
     }
 }

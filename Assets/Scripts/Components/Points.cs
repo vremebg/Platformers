@@ -28,7 +28,7 @@ public class Points : MonoBehaviour {
         return points;
     }
 
-    public void changePoints(int change)
+    public void ChangePoints(int change)
     {
         points += change;
         if (points < 0)

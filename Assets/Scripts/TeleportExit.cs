@@ -5,13 +5,13 @@ using UnityEngine;
 public class TeleportExit : MonoBehaviour {
 
     [SerializeField]
-    float secondsBeforeDespawn = 1;
+    private float secondsBeforeDespawn = 1;
 
     [SerializeField]
-    float zAngleRotation = 0.5f;
+    private float zAngleRotation = 0.5f;
 
-    float startTime;
-    Vector2 initialScale;
+    private float startTime;
+    private Vector2 initialScale;
 
     void Start()
     {

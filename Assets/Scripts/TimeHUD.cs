@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class TimeHUD : MonoBehaviour {
 
-    Text textComp;
+    private Text textComp;
 
     void Start()
     {

@@ -5,9 +5,9 @@ using UnityEngine;
 public class KeyboardControls : MonoBehaviour {
 
     [SerializeField]
-    GameObject character;
+    private GameObject character;
 
-    Character script;
+    private Character script;
 
     public bool interactionX = false;
     public bool interactionUp = false;
@@ -25,7 +25,7 @@ public class KeyboardControls : MonoBehaviour {
             HandleInput();
     }
 
-    void HandleInput()
+    private void HandleInput()
     {
         if (!interactionUp)
             if (Input.GetKey(KeyCode.W)) script.up = true;

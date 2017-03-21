@@ -10,19 +10,19 @@ public class PoisonPit : MonoBehaviour {
         public GameObject obj;
     }
 
-    List<Receiver> receivers = new List<Receiver>();
-    List<Receiver> itemsToRemove = new List<Receiver>();
+    private List<Receiver> receivers = new List<Receiver>();
+    private List<Receiver> itemsToRemove = new List<Receiver>();
 
     [SerializeField]
-    float dps = 20;
+    private float dps = 20;
 
     [SerializeField]
-    float secondsBetweenDamage = 0.1f;
+    private float secondsBetweenDamage = 0.1f;
 
     [SerializeField]
-    string targetTags;
+    private string targetTags;
 
-    string[] tags;
+    private string[] tags;
 
     // Use this for initialization
     void Start () {
@@ -38,7 +38,7 @@ public class PoisonPit : MonoBehaviour {
                 {
                     if (receiver.obj != null)
                     {
-                        gameObject.GetComponent<DamageDealer>().applyDamageOnce(receiver.obj, dps * (Time.time - receiver.timeCounter));
+                        gameObject.GetComponent<DamageDealer>().ApplyDamageOnce(receiver.obj, dps * (Time.time - receiver.timeCounter));
                         receiver.timeCounter = Time.time;
                     }
                     else
@@ -55,7 +55,7 @@ public class PoisonPit : MonoBehaviour {
         }
     }
 	
-    private void OnTriggerEnter2D(Collider2D collider)
+    void OnTriggerEnter2D(Collider2D collider)
     {
         foreach (string tag in tags)
             if (collider.gameObject.CompareTag(tag) && !collider.isTrigger)
@@ -67,7 +67,7 @@ public class PoisonPit : MonoBehaviour {
             }
     }
 
-    private void OnTriggerExit2D(Collider2D collider)
+    void OnTriggerExit2D(Collider2D collider)
     {
         foreach (string tag in tags)
             if (collider.gameObject.CompareTag(tag) && !collider.isTrigger)

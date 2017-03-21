@@ -5,19 +5,19 @@ using UnityEngine;
 public class Teleport : MonoBehaviour {
 
     [SerializeField]
-    bool twoWay = true;
+    private bool twoWay = true;
 
     [SerializeField]
-    Transform destination;
+    private Transform destination;
 
     [SerializeField]
-    string targetTags;
+    private string targetTags;
 
     [SerializeField]
-    Transform teleportExitOneWay;
+    private Transform teleportExitOneWay;
 
-    string[] tags;
-    public bool ready = true;
+    private string[] tags;
+    private bool ready = true;
 
     void Start()
     {

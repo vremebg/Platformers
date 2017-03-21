@@ -5,13 +5,13 @@ using UnityEngine;
 public class Mine : MonoBehaviour {
 
     [SerializeField]
-    GameObject mineExplosion;
+    private GameObject mineExplosion;
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
         if (collider.gameObject.CompareTag("Character") && !collider.isTrigger)
         {
-            gameObject.GetComponent<DamageDealer>().applyDamageOnce(collider.gameObject);
+            gameObject.GetComponent<DamageDealer>().ApplyDamageOnce(collider.gameObject);
             Instantiate(mineExplosion, gameObject.transform.position, Quaternion.Euler(0,0,0));
             DestroyObject(gameObject);
         }

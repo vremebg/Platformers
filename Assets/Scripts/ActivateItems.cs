@@ -6,15 +6,15 @@ public class ActivateItems : MonoBehaviour
 {
 
     [SerializeField]
-    GameObject rootObject;
+    private GameObject rootObject;
 
     [SerializeField]
-    Canvas checkSize;
+    private Canvas checkSize;
 
-    float x;
-    float y;
-    float objSizeX;
-    float objSizeY;
+    private float x;
+    private float y;
+    private float objSizeX;
+    private float objSizeY;
 
     void Start()
     {
@@ -47,7 +47,7 @@ public class ActivateItems : MonoBehaviour
         }
     }
 
-    void Check(Transform temp, float deviationX, float deviationY)
+    private void Check(Transform temp, float deviationX, float deviationY)
     {
         if (temp.position.x + objSizeX + x + deviationX > gameObject.transform.position.x
         && temp.position.x - objSizeX - x - deviationX < gameObject.transform.position.x)

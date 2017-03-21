@@ -5,26 +5,31 @@ using UnityEngine;
 public class RobotDummyHook : MonoBehaviour {
 
     [SerializeField]
-    float xVelocity;
+    private float xVelocity;
 
     [SerializeField]
-    Transform startRaycastPoint;
+    private Transform startRaycastPoint;
 
     [SerializeField]
-    Transform endRaycastPoint;
+    private Transform endRaycastPoint;
 
     [SerializeField]
-    float secondsBetweenHits = 2;
+    private float secondsBetweenHits = 2;
 
     [SerializeField]
-    string targetTags = "Character";
+    private string targetTags = "Character";
 
-    Rigidbody2D thisRigidBody;
-    SpriteRenderer thisSpriteRenderer;
-    string[] tags;
-    Animator thisAnimator;
-    bool hitting = false;
-    float timeCounter;
+    [SerializeField]
+    private GameObject deathExplosion;
+
+    private Health robotHealth;
+    private Rigidbody2D thisRigidBody;
+    private SpriteRenderer thisSpriteRenderer;
+    private DamageDealer dmgDealer;
+    private string[] tags;
+    private Animator thisAnimator;
+    private bool hitting = false;
+    private float timeCounter;
 
     void Start () {
         thisSpriteRenderer = gameObject.GetComponent<SpriteRenderer>();
@@ -33,6 +38,8 @@ public class RobotDummyHook : MonoBehaviour {
         thisAnimator = gameObject.GetComponent<Animator>();
         tags = targetTags.Split(',');
         timeCounter = Time.time;
+        dmgDealer = gameObject.GetComponent<DamageDealer>();
+        robotHealth = gameObject.GetComponent<Health>();
     }
 
     void FixedUpdate()
@@ -49,8 +56,8 @@ public class RobotDummyHook : MonoBehaviour {
                             if (collider.CompareTag(tag))
                             {
                                 hitting = true;
-                                gameObject.GetComponent<DamageDealer>().applyDamageOnce(collider.gameObject);
-                                gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
+                                dmgDealer.ApplyDamageOnce(collider.gameObject);
+                                thisRigidBody.velocity = new Vector2(0, 0);
                                 timeCounter = Time.time;
                                 breakAll = true;
                                 break;

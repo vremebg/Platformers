@@ -6,40 +6,40 @@ using UnityEngine.UI;
 public class LosingCondition : MonoBehaviour {
 
     [SerializeField]
-    GameObject character;
+    private GameObject character;
 
     [SerializeField]
-    bool pointsObjective;
+    private bool pointsObjective;
 
     [SerializeField]
-    int pointsCount;
+    private int pointsCount;
 
     [SerializeField]
-    string pointsStr = "Not enough points!";
+    private string pointsStr = "Not enough points!";
 
     [SerializeField]
-    bool healthObjective;
+    private bool healthObjective;
 
     [SerializeField]
-    int healthTreshold;
+    private int healthTreshold;
 
     [SerializeField]
-    string healthStr = "You died!";
+    private string healthStr = "You died!";
 
     [SerializeField]
-    bool timeObjective;
+    private bool timeObjective;
 
     [SerializeField]
-    int timeInSeconds;
+    private int timeInSeconds;
 
     [SerializeField]
-    string timeStr = "Time is up!";
+    private string timeStr = "Time is up!";
 
     [SerializeField]
-    GameObject lossMenu;
+    private GameObject lossMenu;
 
-    Health healthComponent;
-    Points pointsComponent;
+    private Health healthComponent;
+    private Points pointsComponent;
 
     // Use this for initialization
     void Start()
