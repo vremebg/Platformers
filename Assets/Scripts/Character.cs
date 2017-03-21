@@ -160,7 +160,7 @@ public class Character : MonoBehaviour {
                 {
                     float angle = collider.gameObject.transform.rotation.eulerAngles.z;
                     if (angle > 180) angle = 360 - angle;
-                    if (angle <= maxJumpAngle)
+                    //if (angle <= maxJumpAngle)
                         canJump = true;
                     charState = characterState.onTheGround;
                     if (angle != 0 && transform.position.y >= lastFrameCharacterY)
@@ -174,7 +174,7 @@ public class Character : MonoBehaviour {
                     {
                         float angle = collider.gameObject.transform.rotation.eulerAngles.z;
                         if (angle > 180) angle = 360 - angle;
-                        if (angle <= maxJumpAngle)
+                        //if (angle <= maxJumpAngle)
                             canJump = true;
                         charState = characterState.onTheGround;
                         if (angle != 0 && transform.position.y >= lastFrameCharacterY)
