@@ -21,6 +21,9 @@ public class Character : MonoBehaviour {
     [SerializeField]
     private Transform[] groundPoints;
 
+    [SerializeField]
+    private GameObject secondJumpParticleSystem;
+
     private string[] groundLayers = new string[] { "Platforms", "Barrels", "Ground" };
     private string[] enemyLayers = new string[] { "Dummy Robot" };
     private List<GameObject> hitTargets = new List<GameObject>();
@@ -41,6 +44,7 @@ public class Character : MonoBehaviour {
     private float deviationYToCountForProperOnPlatform = 0.05f; //the ground points should be in 0.05f distance from top of the platform collider
     private float deviationYToCountForProperSteppingOnEnemies = 0.2f;
     private bool onMovingPlatform = false;
+    private bool secondJump = false;
 
     public bool up, left, right = false;
 
@@ -58,12 +62,26 @@ public class Character : MonoBehaviour {
     private void HandleMovement()
     {
         Vector3 localScale = gameObject.transform.localScale;
-        if (up && charState == characterState.onTheGround && canJump)
-        {
-            characterRigidBody.velocity = new Vector2(characterRigidBody.velocity.x, 0);
-            characterRigidBody.AddForce(new Vector2(0, velocity.getJumpVelocity()), ForceMode2D.Impulse);
-            charState = characterState.jumping;
-        }
+        if (up)
+            if (charState == characterState.onTheGround && canJump)
+            {
+                characterRigidBody.velocity = new Vector2(characterRigidBody.velocity.x, 0);
+                characterRigidBody.AddForce(new Vector2(0, velocity.getJumpVelocity()), ForceMode2D.Impulse);
+                charState = characterState.jumping;
+                jumpedInThisFrame = true;
+                secondJump = false;
+                up = false;
+            }
+            else
+                if (!secondJump)
+                {
+                    characterRigidBody.velocity = new Vector2(characterRigidBody.velocity.x, 0);
+                    characterRigidBody.AddForce(new Vector2(0, velocity.getJumpVelocity()), ForceMode2D.Impulse);
+                    charState = characterState.jumping;
+                    Instantiate(secondJumpParticleSystem, gameObject.transform.position, Quaternion.Euler(0, 0, 0));
+                    secondJump = true;
+                    up = false;
+                }
         if (left)
         {
             if (characterRigidBody.velocity.x > -walkVelocityPerSecond)
@@ -92,8 +110,6 @@ public class Character : MonoBehaviour {
 
     private void SetAnimations()
     {
-        if (up && charState == characterState.onTheGround && canJump)
-            jumpedInThisFrame = true;
         if (left || right)
             if (charState != characterState.jumping || charState != characterState.falling)
                 isMoving = true;
@@ -133,7 +149,10 @@ public class Character : MonoBehaviour {
         if (charState != characterState.onTheGround)
             walkVelocityPerSecond = velocity.getMaxWalkVelocityPerSecond();
         else
+        {
             hitTargets.Clear();
+            secondJump = false;
+        }
         HandleMovement();
         ResetPhysicsValues();
     }

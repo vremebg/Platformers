@@ -1,7 +1,7 @@
 NOW:
 ------------------------------------------------------
 DONE - 1.HUD design and implementation - health, points,time
-0.Figure out how to kill enemies - jumping or shooting or what?
+DONE - 0.Figure out how to kill enemies - jumping or shooting or what?
 DONE - 2.coins add to levels, count coins taken
 4."portal"?-next level
 DONE - 3.portal - move to another place - one-way and two-way
@@ -15,7 +15,7 @@ DONE - 7. Time counter on HUD
 LATER:
 ------------------------------------------------------
 12 Options? directly on main menu screen
-13. cell-phone/tablet controls
+DONE - 13. cell-phone/tablet controls
 14. design 10 levels 3x3+1 final: level-level-boss, level-level-boss, level-level-boss, big boss.
 15. Powerup
 18. Choose a good name for the character and the game.

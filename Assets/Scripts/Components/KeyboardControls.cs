@@ -28,7 +28,7 @@ public class KeyboardControls : MonoBehaviour {
     private void HandleInput()
     {
         if (!interactionUp)
-            if (Input.GetKey(KeyCode.W)) script.up = true;
+            if (Input.GetKeyDown(KeyCode.W)) script.up = true;
             else script.up = false;
 
         if (!interactionX)
